@@ -2,7 +2,7 @@ import com.modrinth.minotaur.TaskModrinthUpload
 import net.darkhax.curseforgegradle.TaskPublishCurseForge
 
 plugins {
-    id "fabric-loom" version "1.5-SNAPSHOT"
+    id "fabric-loom" version "1.6-SNAPSHOT"
     id 'com.github.johnrengelman.shadow' version '8.1.1'
     id "net.darkhax.curseforgegradle" version "1.1.18"
     id "com.modrinth.minotaur" version "2.+"
