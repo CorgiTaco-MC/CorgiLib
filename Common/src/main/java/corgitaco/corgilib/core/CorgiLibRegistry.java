@@ -6,7 +6,6 @@ import corgitaco.corgilib.entity.condition.Condition;
 import corgitaco.corgilib.entity.npc.VillagerTradeRegistry;
 import corgitaco.corgilib.math.blendingfunction.BlendingFunction;
 import corgitaco.corgilib.reg.RegistrationProvider;
-import corgitaco.corgilib.world.level.feature.CorgiLibFeatures;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.npc.VillagerTrades;
@@ -30,7 +29,6 @@ public class CorgiLibRegistry {
     public static void init() {
         BlendingFunction.register();
         VillagerTradeRegistry.register();
-        CorgiLibFeatures.register();
         Condition.register();
     }
 }
