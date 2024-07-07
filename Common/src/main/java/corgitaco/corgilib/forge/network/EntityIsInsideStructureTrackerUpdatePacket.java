@@ -1,4 +1,4 @@
-package corgitaco.corgilib.network;
+package corgitaco.corgilib.forge.network;
 
 
 import corgitaco.corgilib.entity.IsInsideStructureTracker;

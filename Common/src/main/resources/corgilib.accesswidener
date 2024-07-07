@@ -1,0 +1,49 @@
+accessWidener v2 named
+
+accessible class net/minecraft/core/registries/BuiltInRegistries$RegistryBootstrap
+
+accessible class net/minecraft/world/entity/npc/VillagerTrades$DyedArmorForEmeralds
+accessible class net/minecraft/world/entity/npc/VillagerTrades$EmeraldForItems
+accessible class net/minecraft/world/entity/npc/VillagerTrades$EmeraldsForVillagerTypeItem
+accessible class net/minecraft/world/entity/npc/VillagerTrades$EnchantBookForEmeralds
+accessible class net/minecraft/world/entity/npc/VillagerTrades$EnchantedItemForEmeralds
+accessible class net/minecraft/world/entity/npc/VillagerTrades$ItemsAndEmeraldsToItems
+accessible class net/minecraft/world/entity/npc/VillagerTrades$ItemsForEmeralds
+accessible class net/minecraft/world/entity/npc/VillagerTrades$SuspiciousStewForEmerald
+accessible class net/minecraft/world/entity/npc/VillagerTrades$TippedArrowForItemsAndEmeralds
+accessible class net/minecraft/world/entity/npc/VillagerTrades$TreasureMapForEmeralds
+
+accessible method net/minecraft/core/registries/BuiltInRegistries registerSimple (Lnet/minecraft/resources/ResourceKey;Lcom/mojang/serialization/Lifecycle;Lnet/minecraft/core/registries/BuiltInRegistries$RegistryBootstrap;)Lnet/minecraft/core/Registry;
+accessible method net/minecraft/world/level/block/LeavesBlock updateDistance (Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/LevelAccessor;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;
+
+accessible field net/minecraft/world/entity/npc/VillagerTrades$EmeraldForItems item Lnet/minecraft/world/item/Item;
+accessible field net/minecraft/world/entity/npc/VillagerTrades$EmeraldForItems cost I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$EmeraldForItems maxUses I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$EmeraldForItems villagerXp I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$ItemsForEmeralds itemStack Lnet/minecraft/world/item/ItemStack;
+accessible field net/minecraft/world/entity/npc/VillagerTrades$ItemsForEmeralds emeraldCost I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$ItemsForEmeralds numberOfItems I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$ItemsForEmeralds maxUses I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$ItemsForEmeralds villagerXp I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$ItemsAndEmeraldsToItems fromItem Lnet/minecraft/world/item/ItemStack;
+accessible field net/minecraft/world/entity/npc/VillagerTrades$ItemsAndEmeraldsToItems fromCount I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$ItemsAndEmeraldsToItems emeraldCost I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$ItemsAndEmeraldsToItems toItem Lnet/minecraft/world/item/ItemStack;
+accessible field net/minecraft/world/entity/npc/VillagerTrades$ItemsAndEmeraldsToItems toCount I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$ItemsAndEmeraldsToItems maxUses I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$ItemsAndEmeraldsToItems villagerXp I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$SuspiciousStewForEmerald effect Lnet/minecraft/world/effect/MobEffect;
+accessible field net/minecraft/world/entity/npc/VillagerTrades$SuspiciousStewForEmerald duration I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$SuspiciousStewForEmerald xp I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$TreasureMapForEmeralds emeraldCost I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$TreasureMapForEmeralds destination Lnet/minecraft/tags/TagKey;
+accessible field net/minecraft/world/entity/npc/VillagerTrades$TreasureMapForEmeralds displayName Ljava/lang/String;
+accessible field net/minecraft/world/entity/npc/VillagerTrades$TreasureMapForEmeralds destinationType Lnet/minecraft/world/level/saveddata/maps/MapDecoration$Type;
+accessible field net/minecraft/world/entity/npc/VillagerTrades$TreasureMapForEmeralds maxUses I
+accessible field net/minecraft/world/entity/npc/VillagerTrades$TreasureMapForEmeralds villagerXp I
+accessible field net/minecraft/world/level/levelgen/structure/templatesystem/StructureTemplate palettes Ljava/util/List;
+accessible field net/minecraft/resources/DelegatingOps delegate Lcom/mojang/serialization/DynamicOps;
+accessible method net/minecraft/world/entity/Display setViewRange (F)V
+accessible method net/minecraft/world/entity/Display setTransformation (Lcom/mojang/math/Transformation;)V
+accessible method net/minecraft/world/entity/Display$TextDisplay setText (Lnet/minecraft/network/chat/Component;)V
+accessible method net/minecraft/world/entity/Display setBillboardConstraints (Lnet/minecraft/world/entity/Display$BillboardConstraints;)V

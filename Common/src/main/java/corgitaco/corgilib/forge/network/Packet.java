@@ -1,4 +1,4 @@
-package corgitaco.corgilib.network;
+package corgitaco.corgilib.forge.network;
 
 import corgitaco.corgilib.CorgiLib;
 import net.minecraft.Util;

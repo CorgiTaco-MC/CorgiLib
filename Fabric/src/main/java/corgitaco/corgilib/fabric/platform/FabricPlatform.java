@@ -1,7 +1,8 @@
-package corgitaco.corgilib.platform;
+package corgitaco.corgilib.fabric.platform;
 
 import com.google.auto.service.AutoService;
 import com.google.common.base.Suppliers;
+import corgitaco.corgilib.forge.platform.ModPlatform;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.nio.file.Path;

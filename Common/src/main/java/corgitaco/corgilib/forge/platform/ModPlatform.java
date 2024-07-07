@@ -1,4 +1,4 @@
-package corgitaco.corgilib.platform;
+package corgitaco.corgilib.forge.platform;
 
 import corgitaco.corgilib.CorgiLib;
 

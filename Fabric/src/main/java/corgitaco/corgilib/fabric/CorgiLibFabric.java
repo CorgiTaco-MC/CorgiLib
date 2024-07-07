@@ -1,6 +1,7 @@
-package corgitaco.corgilib;
+package corgitaco.corgilib.fabric;
 
-import corgitaco.corgilib.network.FabricNetworkHandler;
+import corgitaco.corgilib.CorgiLib;
+import corgitaco.corgilib.fabric.network.FabricNetworkHandler;
 import corgitaco.corgilib.server.commands.CorgiLibCommands;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;

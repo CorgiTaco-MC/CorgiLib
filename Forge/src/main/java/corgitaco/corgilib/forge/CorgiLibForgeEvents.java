@@ -1,5 +1,6 @@
-package corgitaco.corgilib;
+package corgitaco.corgilib.forge;
 
+import corgitaco.corgilib.CorgiLib;
 import corgitaco.corgilib.server.commands.CorgiLibCommands;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

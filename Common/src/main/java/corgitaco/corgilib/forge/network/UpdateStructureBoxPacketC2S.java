@@ -1,4 +1,4 @@
-package corgitaco.corgilib.network;
+package corgitaco.corgilib.forge.network;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;

@@ -1,6 +1,6 @@
-package corgitaco.corgilib.platform;
+package corgitaco.corgilib.forge.platform;
 
-import corgitaco.corgilib.network.Packet;
+import corgitaco.corgilib.forge.network.Packet;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.List;

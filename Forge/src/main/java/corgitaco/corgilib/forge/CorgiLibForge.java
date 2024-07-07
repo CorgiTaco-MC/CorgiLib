@@ -1,6 +1,7 @@
-package corgitaco.corgilib;
+package corgitaco.corgilib.forge;
 
-import corgitaco.corgilib.network.ForgeNetworkHandler;
+import corgitaco.corgilib.CorgiLib;
+import corgitaco.corgilib.forge.network.ForgeNetworkHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;

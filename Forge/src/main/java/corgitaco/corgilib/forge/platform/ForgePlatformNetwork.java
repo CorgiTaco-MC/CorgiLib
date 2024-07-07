@@ -1,7 +1,7 @@
-package corgitaco.corgilib.platform;
+package corgitaco.corgilib.forge.platform;
 
-import corgitaco.corgilib.network.ForgeNetworkHandler;
-import corgitaco.corgilib.network.Packet;
+import corgitaco.corgilib.forge.network.ForgeNetworkHandler;
+import corgitaco.corgilib.forge.network.Packet;
 import net.minecraft.server.level.ServerPlayer;
 
 public class ForgePlatformNetwork implements PlatformNetwork {

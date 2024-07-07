@@ -2,8 +2,8 @@ package corgitaco.corgilib.entity;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import corgitaco.corgilib.network.EntityIsInsideStructureTrackerUpdatePacket;
-import corgitaco.corgilib.platform.PlatformNetwork;
+import corgitaco.corgilib.forge.network.EntityIsInsideStructureTrackerUpdatePacket;
+import corgitaco.corgilib.forge.platform.PlatformNetwork;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
