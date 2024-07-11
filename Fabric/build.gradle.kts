@@ -30,13 +30,13 @@ dependencies {
 
     implementation("com.electronwill.night-config:toml:${project.properties["nightconfig_version"]}")?.let { include(it) }
     implementation("com.electronwill.night-config:core:${project.properties["nightconfig_version"]}")?.let { include(it) }
-    shadow("blue.endless:jankson:${project.properties["jankson_version"]}")
+    include("blue.endless:jankson:${project.properties["jankson_version"]}")
 
-    shadow("io.github.spair:imgui-java-binding:${project.properties["imgui_version"]}")
-    shadow("io.github.spair:imgui-java-lwjgl3:${project.properties["imgui_version"]}")
+    include("io.github.spair:imgui-java-binding:${project.properties["imgui_version"]}")
+    include("io.github.spair:imgui-java-lwjgl3:${project.properties["imgui_version"]}")
 
-    shadow("io.github.spair:imgui-java-natives-windows:${project.properties["imgui_version"]}")
-    shadow("io.github.spair:imgui-java-natives-linux:${project.properties["imgui_version"]}")
+    include("io.github.spair:imgui-java-natives-windows:${project.properties["imgui_version"]}")
+    include("io.github.spair:imgui-java-natives-linux:${project.properties["imgui_version"]}")
 }
 
 tasks {

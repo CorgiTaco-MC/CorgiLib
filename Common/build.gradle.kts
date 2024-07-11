@@ -14,15 +14,14 @@ dependencies {
     // Do NOT use other classes from fabric loader
     modImplementation("net.fabricmc:fabric-loader:${project.properties["fabric_loader_version"]}")
 
-    compileOnly("org.ow2.asm:asm-tree:${project.properties["asm_version"]}")
     compileOnly("com.electronwill.night-config:toml:${project.properties["nightconfig_version"]}")
     compileOnly("blue.endless:jankson:${project.properties["jankson_version"]}")
 
     compileOnly("io.github.spair:imgui-java-binding:${project.properties["imgui_version"]}")
     compileOnly("io.github.spair:imgui-java-lwjgl3:${project.properties["imgui_version"]}")
 
-    compileOnly ("io.github.spair:imgui-java-natives-windows:${project.properties["imgui_version"]}")
-    compileOnly ("io.github.spair:imgui-java-natives-linux:${project.properties["imgui_version"]}")
+    compileOnly("io.github.spair:imgui-java-natives-windows:${project.properties["imgui_version"]}")
+    compileOnly("io.github.spair:imgui-java-natives-linux:${project.properties["imgui_version"]}")
 }
 
 publishing {
