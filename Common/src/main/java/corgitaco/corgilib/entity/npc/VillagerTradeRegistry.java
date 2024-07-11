@@ -3,9 +3,8 @@ package corgitaco.corgilib.entity.npc;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import corgitaco.corgilib.CorgiLib;
 import corgitaco.corgilib.core.CorgiLibRegistry;
-import corgitaco.corgilib.reg.RegistrationProvider;
+import corgitaco.corgilib.forge.platform.ModPlatform;
 import corgitaco.corgilib.serialization.codec.CodecUtil;
 import net.minecraft.Util;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -96,12 +95,10 @@ public class VillagerTradeRegistry {
             .dispatchStable(itemListing -> ITEM_LISTING_CLASS_BY_CODEC.get(itemListing.getClass()), codec -> codec.fieldOf("config").codec()));
 
     public static void register() {
-        final var provider = RegistrationProvider.get(CorgiLibRegistry.VILLAGER_TRADES_ITEM_LISTING_RESOURCE_KEY, CorgiLib.MOD_ID);
-
-        provider.register("emerald_for_items", () -> EMERALD_FOR_ITEMS_CODEC);
-        provider.register("items_for_emeralds", () -> ITEMS_FOR_EMERALDS_CODEC);
-        provider.register("suspicious_stew_for_emerald", () -> SUSPICIOUS_STEW_FOR_EMERALD_CODEC);
-        provider.register("items_and_emeralds_to_items", () -> ITEMS_AND_EMERALDS_TO_ITEMS_CODEC);
-        provider.register("treasure_map_for_emeralds", () -> TREASURE_MAP_FOR_EMERALDS_CODEC);
+        ModPlatform.PLATFORM.register(CorgiLibRegistry.VILLAGER_TRADES_ITEM_LISTING.get(), "emerald_for_items", () -> EMERALD_FOR_ITEMS_CODEC);
+        ModPlatform.PLATFORM.register(CorgiLibRegistry.VILLAGER_TRADES_ITEM_LISTING.get(), "items_for_emeralds", () -> ITEMS_FOR_EMERALDS_CODEC);
+        ModPlatform.PLATFORM.register(CorgiLibRegistry.VILLAGER_TRADES_ITEM_LISTING.get(), "suspicious_stew_for_emerald", () -> SUSPICIOUS_STEW_FOR_EMERALD_CODEC);
+        ModPlatform.PLATFORM.register(CorgiLibRegistry.VILLAGER_TRADES_ITEM_LISTING.get(), "items_and_emeralds_to_items", () -> ITEMS_AND_EMERALDS_TO_ITEMS_CODEC);
+        ModPlatform.PLATFORM.register(CorgiLibRegistry.VILLAGER_TRADES_ITEM_LISTING.get(), "treasure_map_for_emeralds", () -> TREASURE_MAP_FOR_EMERALDS_CODEC);
     }
 }

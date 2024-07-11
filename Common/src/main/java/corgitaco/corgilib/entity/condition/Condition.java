@@ -1,17 +1,14 @@
 package corgitaco.corgilib.entity.condition;
 
 import com.mojang.serialization.Codec;
-import corgitaco.corgilib.CorgiLib;
 import corgitaco.corgilib.core.CorgiLibRegistry;
-import corgitaco.corgilib.reg.RegistrationProvider;
+import corgitaco.corgilib.forge.platform.ModPlatform;
 import net.minecraft.util.ExtraCodecs;
 
 import java.util.function.Function;
 
 public interface Condition {
     Codec<Condition> CODEC = ExtraCodecs.lazyInitializedCodec(() ->  CorgiLibRegistry.CONDITION.get().byNameCodec().dispatchStable(Condition::codec, Function.identity()));
-    RegistrationProvider<Codec<? extends Condition>> PROVIDER = RegistrationProvider.get(CorgiLibRegistry.CONDITION_KEY, CorgiLib.MOD_ID);
-
     boolean passes(ConditionContext conditionContext);
 
     Codec<? extends Condition> codec();
@@ -50,6 +47,6 @@ public interface Condition {
     }
 
     static void register(String id, Codec<? extends Condition> codec) {
-        PROVIDER.register(id, () -> codec);
+        ModPlatform.PLATFORM.register(CorgiLibRegistry.CONDITION.get(), id, () -> codec);
     }
 }

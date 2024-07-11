@@ -2,17 +2,14 @@ package corgitaco.corgilib.math.blendingfunction;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import corgitaco.corgilib.CorgiLib;
 import corgitaco.corgilib.core.CorgiLibRegistry;
-import corgitaco.corgilib.reg.RegistrationProvider;
+import corgitaco.corgilib.forge.platform.ModPlatform;
 import net.minecraft.util.ExtraCodecs;
 
 import java.util.function.Function;
 
 public interface BlendingFunction {
     Codec<BlendingFunction> CODEC = ExtraCodecs.lazyInitializedCodec(() -> CorgiLibRegistry.BLENDING_FUNCTION.get().byNameCodec().dispatchStable(BlendingFunction::codec, Function.identity()));
-    RegistrationProvider<Codec<? extends BlendingFunction>> PROVIDER = RegistrationProvider.get(CorgiLibRegistry.BLENDING_FUNCTION_RESOURCE_KEY, CorgiLib.MOD_ID);
-
     Codec<? extends BlendingFunction> codec();
 
     double apply(double factor);
@@ -32,7 +29,7 @@ public interface BlendingFunction {
     }
 
     private static void register(String name, Codec<? extends BlendingFunction> function) {
-        PROVIDER.register(name, () -> function);
+        ModPlatform.PLATFORM.register(CorgiLibRegistry.BLENDING_FUNCTION.get(), name, () -> function);
     }
 
     record EaseInOutCirc() implements BlendingFunction {
