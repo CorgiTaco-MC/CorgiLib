@@ -1,6 +1,7 @@
 package corgitaco.corgilib.forge.network;
 
 import corgitaco.corgilib.CorgiLib;
+import corgitaco.corgilib.network.Packet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;

@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import corgitaco.corgilib.core.CorgiLibRegistry;
-import corgitaco.corgilib.forge.platform.ModPlatform;
+import corgitaco.corgilib.platform.ModPlatform;
 import corgitaco.corgilib.serialization.codec.CodecUtil;
 import net.minecraft.Util;
 import net.minecraft.core.registries.BuiltInRegistries;

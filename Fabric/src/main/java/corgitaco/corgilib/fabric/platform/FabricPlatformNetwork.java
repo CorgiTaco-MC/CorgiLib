@@ -2,8 +2,8 @@ package corgitaco.corgilib.fabric.platform;
 
 import com.google.auto.service.AutoService;
 import corgitaco.corgilib.fabric.network.FabricNetworkHandler;
-import corgitaco.corgilib.forge.network.Packet;
-import corgitaco.corgilib.forge.platform.PlatformNetwork;
+import corgitaco.corgilib.network.Packet;
+import corgitaco.corgilib.platform.PlatformNetwork;
 import net.minecraft.server.level.ServerPlayer;
 
 @AutoService(FabricPlatformNetwork.class)

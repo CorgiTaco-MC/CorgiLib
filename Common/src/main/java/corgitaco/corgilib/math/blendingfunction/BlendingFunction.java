@@ -3,7 +3,7 @@ package corgitaco.corgilib.math.blendingfunction;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import corgitaco.corgilib.core.CorgiLibRegistry;
-import corgitaco.corgilib.forge.platform.ModPlatform;
+import corgitaco.corgilib.platform.ModPlatform;
 import net.minecraft.util.ExtraCodecs;
 
 import java.util.function.Function;

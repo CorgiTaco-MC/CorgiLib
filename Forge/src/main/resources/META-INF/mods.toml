@@ -4,7 +4,7 @@ license="LGPLv3"
 issueTrackerURL="https://github.com/CorgiTaco/CorgiLib/issues"
 [[mods]]
 modId="corgilib"
-version="${file.jarVersion}" #mandatory
+version="${version}" #mandatory
 displayName="CorgiLib" #mandatory
 displayURL="https://github.com/CorgiTaco/CorgiLib" #optional
 logoFile="assets/corgilib/corgilib.png" #optional

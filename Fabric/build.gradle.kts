@@ -17,9 +17,7 @@ configurations {
     getByName("developmentFabric").extendsFrom(configurations["common"])
 }
 
-loom {
-    accessWidenerPath.set(project(":Common").loom.accessWidenerPath)
-}
+loom.accessWidenerPath.set(project(":Common").loom.accessWidenerPath)
 
 dependencies {
     modImplementation("net.fabricmc:fabric-loader:${project.properties["fabric_loader_version"]}")

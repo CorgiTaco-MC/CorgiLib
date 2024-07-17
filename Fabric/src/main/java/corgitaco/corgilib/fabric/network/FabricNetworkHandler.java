@@ -1,7 +1,7 @@
 package corgitaco.corgilib.fabric.network;
 
 import corgitaco.corgilib.CorgiLib;
-import corgitaco.corgilib.forge.network.Packet;
+import corgitaco.corgilib.network.Packet;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;

@@ -2,7 +2,7 @@ package corgitaco.corgilib.entity.condition;
 
 import com.mojang.serialization.Codec;
 import corgitaco.corgilib.core.CorgiLibRegistry;
-import corgitaco.corgilib.forge.platform.ModPlatform;
+import corgitaco.corgilib.platform.ModPlatform;
 import net.minecraft.util.ExtraCodecs;
 
 import java.util.function.Function;

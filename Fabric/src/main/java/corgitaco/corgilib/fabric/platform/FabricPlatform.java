@@ -2,10 +2,15 @@ package corgitaco.corgilib.fabric.platform;
 
 import com.google.auto.service.AutoService;
 import com.google.common.base.Suppliers;
+import com.mojang.serialization.Codec;
 import corgitaco.corgilib.CorgiLib;
-import corgitaco.corgilib.forge.platform.ModPlatform;
+import corgitaco.corgilib.platform.ModPlatform;
+import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
+import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 
 import java.nio.file.Path;
 import java.util.Collection;
@@ -47,5 +52,16 @@ public class FabricPlatform implements ModPlatform {
     public <T> Supplier<T> register(Registry<T> registry, String name, Supplier<T> value) {
         T value1 = Registry.register(registry, CorgiLib.createLocation(name), value.get());
         return () -> value1;
+    }
+
+    @Override
+    public <T> Registry<T> createSimpleBuiltin(ResourceKey<Registry<T>> registryKey) {
+        MappedRegistry<T> registry = FabricRegistryBuilder.createSimple(registryKey).buildAndRegister();
+        return registry;
+    }
+
+    @Override
+    public <T> void registerDatapackRegistry(ResourceKey<Registry<T>> key, Supplier<Codec<T>> codec) {
+        DynamicRegistries.registerSynced(key, codec.get());
     }
 }
