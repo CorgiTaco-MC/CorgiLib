@@ -55,9 +55,10 @@ public class FabricPlatform implements ModPlatform {
     }
 
     @Override
-    public <T> Registry<T> createSimpleBuiltin(ResourceKey<Registry<T>> registryKey) {
+    public <T> Supplier<Registry<T>> createSimpleBuiltin(ResourceKey<Registry<T>> registryKey) {
         MappedRegistry<T> registry = FabricRegistryBuilder.createSimple(registryKey).buildAndRegister();
-        return registry;
+        Supplier<Registry<T>> supplier = () -> registry;
+        return supplier;
     }
 
     @Override

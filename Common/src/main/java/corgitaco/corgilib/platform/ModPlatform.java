@@ -55,7 +55,7 @@ public interface ModPlatform {
 
     <T> Supplier<T> register(Registry<T> registry, String name, Supplier<T> value);
 
-    <T> Registry<T> createSimpleBuiltin(ResourceKey<Registry<T>> registryKey);
+    <T> Supplier<Registry<T>> createSimpleBuiltin(ResourceKey<Registry<T>> registryKey);
 
     <T> void registerDatapackRegistry(ResourceKey<Registry<T>> key, Supplier<Codec<T>> codec);
 }

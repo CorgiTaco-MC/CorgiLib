@@ -61,7 +61,7 @@ public class ForgePlatform implements ModPlatform {
     }
 
     @Override
-    public <T> Registry<T> createSimpleBuiltin(ResourceKey<Registry<T>> registryKey) {
+    public <T> Supplier<Registry<T>> createSimpleBuiltin(ResourceKey<Registry<T>> registryKey) {
         if (BuiltInRegistries.REGISTRY instanceof MappedRegistry<? extends Registry<?>> mappedRegistry) { // We have to unlock the registry first
             mappedRegistry.unfreeze();
         }
@@ -71,7 +71,7 @@ public class ForgePlatform implements ModPlatform {
         if (BuiltInRegistries.REGISTRY instanceof MappedRegistry<? extends Registry<?>> mappedRegistry) { // Relock the registry
             mappedRegistry.freeze();
         }
-        return registry;
+        return () -> registry;
     }
 
     public static final List<Consumer<DataPackRegistryEvent.NewRegistry>> DATAPACK_REGISTRIES = new ArrayList<>();
