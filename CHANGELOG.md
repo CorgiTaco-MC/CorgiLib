@@ -1,3 +1,9 @@
+# 4.0.2.0
+* Move Project to Arch Loom
+* Remove unused libraries
+* Remove use of Regutils
+* Major Breaking API changes due to package restructuring
+
 # 4.0.1.4
 * Allow the ability to set a custom easeInCirc blending function exponent. For BWG's Dead Sea rocks.
 
