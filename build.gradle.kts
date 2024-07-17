@@ -16,6 +16,7 @@ subprojects {
 
     val loom = project.extensions.getByName<LoomGradleExtensionAPI>("loom")
     loom.silentMojangMappingsLicense()
+    loom.mixin.useLegacyMixinAp.set(false)
 
     repositories {
         mavenCentral()
