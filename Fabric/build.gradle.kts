@@ -13,7 +13,7 @@ architectury {
 }
 
 val minecraftVersion = project.properties["minecraft_version"] as String
-val jarName = base.archivesName.get() + "-fabric-" + project.properties["minecraft_version"]
+val jarName = base.archivesName.get() + "-fabric-$minecraftVersion"
 
 
 configurations {
@@ -92,8 +92,8 @@ publisher {
     modrinthID.set(project.properties["modrinth_id"].toString())
     githubRepo.set("https://github.com/CorgiTaco/Oh-The-Trees-Youll-Grow")
     setReleaseType(ReleaseType.BETA)
-    projectVersion.set(project.version.toString())
-    displayName.set(jarName  + "-" + project.properties["version"])
+    projectVersion.set("$minecraftVersion-${project.version}-fabric")
+    displayName.set(jarName)
     changelog.set(projectDir.toPath().parent.resolve("CHANGELOG.md").toFile().readText())
     artifact.set(tasks.remapJar)
     setGameVersions(minecraftVersion)
@@ -107,7 +107,8 @@ publisher {
 
 publishing {
     publications.create<MavenPublication>("mavenFabric") {
-        artifactId = jarName
+        artifactId = "${project.properties["archives_base_name"]}" + "-fabric"
+        version = "$minecraftVersion-" + project.version.toString()
         from(components["java"])
     }
 
