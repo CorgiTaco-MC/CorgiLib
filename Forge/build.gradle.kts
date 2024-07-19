@@ -31,7 +31,6 @@ loom {
         extraAccessWideners.add(loom.accessWidenerPath.get().asFile.name)
 
         mixinConfig("corgilib-common.mixins.json")
-        mixinConfig("corgilib.mixins.json")
     }
 
     // Forge Datagen Gradle config.  Remove if not using Forge datagen
@@ -73,7 +72,7 @@ tasks {
     }
 
     shadowJar {
-        exclude("fabric.mod.json")
+        exclude("fabric.mod.json", "architectury.common.json")
         configurations = listOf(project.configurations.getByName("shadowCommon"))
         archiveClassifier.set("dev-shadow")
     }
