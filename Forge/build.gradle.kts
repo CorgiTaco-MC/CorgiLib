@@ -50,8 +50,6 @@ dependencies {
     "common"(project(":Common", "namedElements")) { isTransitive = false }
     "shadowCommon"(project(":Common", "transformProductionForge")) { isTransitive = false }
 
-    implementation("com.electronwill.night-config:toml:${project.properties["nightconfig_version"]}")?.let { include(it) }
-    implementation("com.electronwill.night-config:core:${project.properties["nightconfig_version"]}")?.let { include(it) }
     include("blue.endless:jankson:${project.properties["jankson_version"]}")
 
     include("io.github.spair:imgui-java-binding:${project.properties["imgui_version"]}")
@@ -130,8 +128,8 @@ publishing {
     repositories {
         mavenLocal()
         maven {
-            val releasesRepoUrl = "https://example.com/releases"
-            val snapshotsRepoUrl = "https://example.com/snapshots"
+            val releasesRepoUrl = "https://maven.jt-dev.tech/releases"
+            val snapshotsRepoUrl = "https://maven.jt-dev.tech/snapshots"
             url = uri(if (project.version.toString().endsWith("SNAPSHOT") || project.version.toString().startsWith("0")) snapshotsRepoUrl else releasesRepoUrl)
             name = "ExampleRepo"
             credentials {
