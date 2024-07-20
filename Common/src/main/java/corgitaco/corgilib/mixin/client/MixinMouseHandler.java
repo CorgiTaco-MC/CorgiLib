@@ -13,7 +13,7 @@ public class MixinMouseHandler {
 
 
     @Inject(method = "onScroll", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;getOverlay()Lnet/minecraft/client/gui/screens/Overlay;"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
-    private void editor(long $$0, double $$1, double $$2, CallbackInfo ci, double increment) {
+    private void editor(long windowPointer, double xOffset, double yOffset, CallbackInfo ci, double increment) {
         if (StructureBoxEditor.onScroll(increment)) {
             ci.cancel();
         }

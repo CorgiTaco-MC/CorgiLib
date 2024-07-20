@@ -19,7 +19,7 @@ public class MinecraftMixin {
     private Window window;
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    public void initImGui(GameConfig $$0, CallbackInfo ci) {
+    public void initImGui(GameConfig gameConfig, CallbackInfo ci) {
         if (!Minecraft.ON_OSX)
             ImGuiImpl.create(window.getWindow());
     }
