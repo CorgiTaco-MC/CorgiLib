@@ -14,7 +14,6 @@ accessible class net/minecraft/world/entity/npc/VillagerTrades$TippedArrowForIte
 accessible class net/minecraft/world/entity/npc/VillagerTrades$TreasureMapForEmeralds
 
 accessible method net/minecraft/core/registries/BuiltInRegistries registerSimple (Lnet/minecraft/resources/ResourceKey;Lcom/mojang/serialization/Lifecycle;Lnet/minecraft/core/registries/BuiltInRegistries$RegistryBootstrap;)Lnet/minecraft/core/Registry;
-accessible method net/minecraft/world/level/block/LeavesBlock updateDistance (Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/LevelAccessor;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;
 
 accessible field net/minecraft/world/entity/npc/VillagerTrades$EmeraldForItems item Lnet/minecraft/world/item/Item;
 accessible field net/minecraft/world/entity/npc/VillagerTrades$EmeraldForItems cost I
@@ -41,7 +40,7 @@ accessible field net/minecraft/world/entity/npc/VillagerTrades$TreasureMapForEme
 accessible field net/minecraft/world/entity/npc/VillagerTrades$TreasureMapForEmeralds destinationType Lnet/minecraft/world/level/saveddata/maps/MapDecoration$Type;
 accessible field net/minecraft/world/entity/npc/VillagerTrades$TreasureMapForEmeralds maxUses I
 accessible field net/minecraft/world/entity/npc/VillagerTrades$TreasureMapForEmeralds villagerXp I
-accessible field net/minecraft/world/level/levelgen/structure/templatesystem/StructureTemplate palettes Ljava/util/List;
+
 accessible field net/minecraft/resources/DelegatingOps delegate Lcom/mojang/serialization/DynamicOps;
 accessible method net/minecraft/world/entity/Display setViewRange (F)V
 accessible method net/minecraft/world/entity/Display setTransformation (Lcom/mojang/math/Transformation;)V
