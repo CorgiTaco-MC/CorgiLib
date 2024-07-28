@@ -37,11 +37,11 @@ dependencies {
     implementation("com.electronwill.night-config:core:${project.properties["nightconfig_version"]}")?.let { include(it) }
     include("blue.endless:jankson:${project.properties["jankson_version"]}")
 
-    include("io.github.spair:imgui-java-binding:${project.properties["imgui_version"]}")
-    include("io.github.spair:imgui-java-lwjgl3:${project.properties["imgui_version"]}")
+    "shadowCommon"("io.github.spair:imgui-java-binding:${project.properties["imgui_version"]}")
+    "shadowCommon"("io.github.spair:imgui-java-lwjgl3:${project.properties["imgui_version"]}")
 
-    include("io.github.spair:imgui-java-natives-windows:${project.properties["imgui_version"]}")
-    include("io.github.spair:imgui-java-natives-linux:${project.properties["imgui_version"]}")
+    "shadowCommon"("io.github.spair:imgui-java-natives-windows:${project.properties["imgui_version"]}")
+    "shadowCommon"("io.github.spair:imgui-java-natives-linux:${project.properties["imgui_version"]}")
 }
 
 tasks {
@@ -58,6 +58,11 @@ tasks {
         exclude("architectury.common.json")
         configurations = listOf(project.configurations.getByName("shadowCommon"))
         archiveClassifier.set("dev-shadow")
+        relocate("io.github.spair:imgui-java-binding:${project.properties["imgui_version"]}", "${project.group}.relocated.imgui-java-binding")
+        relocate("io.github.spair:imgui-java-lwjgl3:${project.properties["imgui_version"]}", "${project.group}.relocated.imgui-java-lwjgl3")
+        relocate("io.github.spair:imgui-java-natives-linux:${project.properties["imgui_version"]}", "${project.group}.relocated.imgui-java-natives-linux")
+        relocate("io.github.spair:imgui-java-natives-windows:${project.properties["imgui_version"]}", "${project.group}.relocated.imgui-java-natives-windows")
+        relocate("io.github.spair:imgui-java-natives-macos:${project.properties["imgui_version"]}", "${project.group}.relocated.imgui-java-natives-macos")
     }
 
     remapJar {
