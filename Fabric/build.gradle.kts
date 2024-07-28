@@ -38,7 +38,10 @@ dependencies {
     include("blue.endless:jankson:${project.properties["jankson_version"]}")
 
     "shadowCommon"("io.github.spair:imgui-java-binding:${project.properties["imgui_version"]}")
-    "shadowCommon"("io.github.spair:imgui-java-lwjgl3:${project.properties["imgui_version"]}")
+    "shadowCommon"("io.github.spair:imgui-java-lwjgl3:${project.properties["imgui_version"]}") {
+        exclude(group = "org.lwjgl")
+        exclude(group = "org.lwjgl.lwjgl")
+    }
 
     "shadowCommon"("io.github.spair:imgui-java-natives-windows:${project.properties["imgui_version"]}")
     "shadowCommon"("io.github.spair:imgui-java-natives-linux:${project.properties["imgui_version"]}")
