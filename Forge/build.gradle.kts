@@ -50,7 +50,7 @@ dependencies {
     "common"(project(":Common", "namedElements")) { isTransitive = false }
     "shadowCommon"(project(":Common", "transformProductionForge")) { isTransitive = false }
 
-    include("blue.endless:jankson:${project.properties["jankson_version"]}")
+    "shadowCommon"("blue.endless:jankson:${project.properties["jankson_version"]}")
 
     "shadowCommon"("io.github.spair:imgui-java-binding:${project.properties["imgui_version"]}")
     "shadowCommon"("io.github.spair:imgui-java-lwjgl3:${project.properties["imgui_version"]}") {
@@ -76,6 +76,7 @@ tasks {
         exclude("fabric.mod.json", "architectury.common.json")
         configurations = listOf(project.configurations.getByName("shadowCommon"))
         archiveClassifier.set("dev-shadow")
+        relocate("blue.endless.jankson", "${project.group}.shadow.blue.endless.jankson")
         relocate("io.github.spair:imgui-java-binding:${project.properties["imgui_version"]}", "${project.group}.relocated.imgui-java-binding")
         relocate("io.github.spair:imgui-java-lwjgl3:${project.properties["imgui_version"]}", "${project.group}.relocated.imgui-java-lwjgl3")
         relocate("io.github.spair:imgui-java-natives-linux:${project.properties["imgui_version"]}", "${project.group}.relocated.imgui-java-natives-linux")
