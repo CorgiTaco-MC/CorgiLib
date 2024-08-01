@@ -51,15 +51,6 @@ dependencies {
     "shadowCommon"(project(":Common", "transformProductionForge")) { isTransitive = false }
 
     "shadowCommon"("blue.endless:jankson:${project.properties["jankson_version"]}")
-
-    "shadowCommon"("io.github.spair:imgui-java-binding:${project.properties["imgui_version"]}")
-    "shadowCommon"("io.github.spair:imgui-java-lwjgl3:${project.properties["imgui_version"]}") {
-        exclude(group = "org.lwjgl")
-        exclude(group = "org.lwjgl.lwjgl")
-    }
-
-    "shadowCommon"("io.github.spair:imgui-java-natives-windows:${project.properties["imgui_version"]}")
-    "shadowCommon"("io.github.spair:imgui-java-natives-linux:${project.properties["imgui_version"]}")
 }
 
 tasks {
@@ -77,11 +68,6 @@ tasks {
         configurations = listOf(project.configurations.getByName("shadowCommon"))
         archiveClassifier.set("dev-shadow")
         relocate("blue.endless.jankson", "${project.group}.shadow.blue.endless.jankson")
-        relocate("io.github.spair:imgui-java-binding:${project.properties["imgui_version"]}", "${project.group}.relocated.imgui-java-binding")
-        relocate("io.github.spair:imgui-java-lwjgl3:${project.properties["imgui_version"]}", "${project.group}.relocated.imgui-java-lwjgl3")
-        relocate("io.github.spair:imgui-java-natives-linux:${project.properties["imgui_version"]}", "${project.group}.relocated.imgui-java-natives-linux")
-        relocate("io.github.spair:imgui-java-natives-windows:${project.properties["imgui_version"]}", "${project.group}.relocated.imgui-java-natives-windows")
-        relocate("io.github.spair:imgui-java-natives-macos:${project.properties["imgui_version"]}", "${project.group}.relocated.imgui-java-natives-macos")
     }
 
     remapJar {

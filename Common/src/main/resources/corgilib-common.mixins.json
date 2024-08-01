@@ -13,8 +13,6 @@
     "chunk.MixinLevelChunk"
   ],
   "client": [
-    "client.GameRendererMixin",
-    "client.MinecraftMixin",
     "client.MixinMouseHandler"
   ],
   "server": [
