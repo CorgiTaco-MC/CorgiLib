@@ -1,5 +1,6 @@
 plugins {
     id("com.github.johnrengelman.shadow")
+    id("com.hypherionmc.modutils.modpublisher") version "2.+"
 }
 
 architectury {

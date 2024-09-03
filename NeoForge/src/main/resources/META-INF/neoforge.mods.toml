@@ -15,20 +15,18 @@ Library with handy utilities.
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.corgilib]] #optional
-# the modid of the dependency
 modId="neoforge" #mandatory
-# Does this dependency have to exist - if not, ordering below must be specified
-mandatory=true #mandatory
-# The version range of the dependency
+type="required"#mandatory
 versionRange="[21,)" #mandatory
-# An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
 ordering="NONE"
-# Side this dependency is applied on - BOTH, CLIENT or SERVER
 side="BOTH"
 
 [[dependencies.corgilib]]
 modId="minecraft"
-mandatory=true
+type="required"
 versionRange="[1.21.0,)"
 ordering="NONE"
 side="BOTH"
+
+[[mixins]]
+config="corgilib-common.mixins.json"
