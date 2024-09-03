@@ -1,3 +1,7 @@
+import com.hypherionmc.modpublisher.properties.CurseEnvironment
+import com.hypherionmc.modpublisher.properties.ModLoader
+import com.hypherionmc.modpublisher.properties.ReleaseType
+
 plugins {
     id("com.github.johnrengelman.shadow")
     id("com.hypherionmc.modutils.modpublisher") version "2.+"
@@ -65,4 +69,31 @@ tasks {
         inputFile.set(shadowJar.get().archiveFile)
         dependsOn(shadowJar)
     }
+}
+
+publisher {
+    apiKeys {
+        curseforge(getPublishingCredentials().first)
+        modrinth(getPublishingCredentials().second)
+        github(project.properties["github_token"].toString())
+    }
+
+    curseID.set(project.properties["curseforge_id"].toString())
+    modrinthID.set(project.properties["modrinth_id"].toString())
+    githubRepo.set("https://github.com/CorgiTaco/Oh-The-Trees-Youll-Grow")
+    setReleaseType(ReleaseType.RELEASE)
+    projectVersion.set("$minecraftVersion-${project.version}-neoforge")
+    displayName.set("${project.properties["mod_name"]}-neoforge-$minecraftVersion-${project.version}")
+    changelog.set(projectDir.toPath().parent.resolve("CHANGELOG.md").toFile().readText())
+    artifact.set(tasks.remapJar)
+    setGameVersions(minecraftVersion)
+    setLoaders(ModLoader.NEOFORGE)
+    setCurseEnvironment(CurseEnvironment.BOTH)
+    setJavaVersions(JavaVersion.VERSION_21, JavaVersion.VERSION_22)
+}
+
+private fun getPublishingCredentials(): Pair<String?, String?> {
+    val curseForgeToken = (project.findProperty("curseforge_key") ?: System.getenv("CURSEFORGE_KEY") ?: "") as String?
+    val modrinthToken = (project.findProperty("modrinth_key") ?: System.getenv("MODRINTH_KEY") ?: "") as String?
+    return Pair(curseForgeToken, modrinthToken)
 }
