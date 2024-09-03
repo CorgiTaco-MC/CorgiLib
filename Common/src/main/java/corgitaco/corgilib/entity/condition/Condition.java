@@ -4,9 +4,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import corgitaco.corgilib.core.CorgiLibRegistry;
 import corgitaco.corgilib.platform.ModPlatform;
-import net.minecraft.util.ExtraCodecs;
-
-import java.util.function.Function;
 
 public interface Condition {
     Codec<Condition> CODEC = Codec.lazyInitialized(() ->  CorgiLibRegistry.CONDITION.get().byNameCodec().dispatchStable(Condition::codec, MapCodec::assumeMapUnsafe));

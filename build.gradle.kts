@@ -64,7 +64,8 @@ subprojects {
 
     publishing {
         publications.create<MavenPublication>("mavenJava") {
-            artifactId = base.archivesName.get()
+            artifactId = project.properties["archives_base_name"] as String + "-${project.name}"
+            version = minecraftVersion + "-" + project.version.toString()
             from(components["java"])
         }
 

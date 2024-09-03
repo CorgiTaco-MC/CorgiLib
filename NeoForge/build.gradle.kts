@@ -33,7 +33,7 @@ configurations {
 loom {
     accessWidenerPath.set(project(":Common").loom.accessWidenerPath)
 
-    // NeoForge Datagen Gradle config.  Remove if not using NeoForge datagen
+    // NeoForge Datagen Gradle config.
     runs.create("datagen") {
         data()
         programArgs("--all", "--mod", "corgilib")
@@ -69,6 +69,7 @@ tasks {
     remapJar {
         inputFile.set(shadowJar.get().archiveFile)
         dependsOn(shadowJar)
+        atAccessWideners.add("corgilib.accesswidener")
     }
 }
 
@@ -83,8 +84,8 @@ publisher {
     modrinthID.set(project.properties["modrinth_id"].toString())
     githubRepo.set("https://github.com/CorgiTaco/Oh-The-Trees-Youll-Grow")
     setReleaseType(ReleaseType.RELEASE)
-    projectVersion.set("$minecraftVersion-${project.version}-neoforge")
-    displayName.set("${project.properties["mod_name"]}-neoforge-$minecraftVersion-${project.version}")
+    projectVersion.set("$minecraftVersion-${project.version}-NeoForge")
+    displayName.set("${project.properties["mod_name"]}-NeoForge-$minecraftVersion-${project.version}")
     changelog.set(projectDir.toPath().parent.resolve("CHANGELOG.md").toFile().readText())
     artifact.set(tasks.remapJar)
     setGameVersions(minecraftVersion)

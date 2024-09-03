@@ -11,7 +11,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.network.Channel;
 import net.minecraftforge.network.ChannelBuilder;
-import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.payload.PayloadConnection;
 import net.minecraftforge.network.payload.PayloadFlow;
 import net.minecraftforge.network.payload.PayloadProtocol;

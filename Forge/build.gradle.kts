@@ -42,13 +42,6 @@ loom {
 
         mixinConfig("corgilib-common.mixins.json")
     }
-
-    runs.create("datagen") {
-        data()
-        programArgs("--all", "--mod", "corgilib")
-        programArgs("--output", project(":Common").file("src/main/generated/resources").absolutePath)
-        programArgs("--existing", project(":Common").file("src/main/resources").absolutePath)
-    }
 }
 
 dependencies {
@@ -93,8 +86,8 @@ publisher {
     modrinthID.set(project.properties["modrinth_id"].toString())
     githubRepo.set("https://github.com/CorgiTaco/Oh-The-Trees-Youll-Grow")
     setReleaseType(ReleaseType.RELEASE)
-    projectVersion.set("$minecraftVersion-${project.version}-forge")
-    displayName.set("${project.properties["mod_name"]}-forge-$minecraftVersion-${project.version}")
+    projectVersion.set("$minecraftVersion-${project.version}-Forge")
+    displayName.set("${project.properties["mod_name"]}-Forge-$minecraftVersion-${project.version}")
     changelog.set(projectDir.toPath().parent.resolve("CHANGELOG.md").toFile().readText())
     artifact.set(tasks.remapJar)
     setGameVersions(minecraftVersion)

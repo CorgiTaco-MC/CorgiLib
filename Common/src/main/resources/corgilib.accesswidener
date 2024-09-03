@@ -5,9 +5,7 @@ accessible class net/minecraft/core/registries/BuiltInRegistries$RegistryBootstr
 accessible method net/minecraft/core/registries/BuiltInRegistries registerSimple (Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/core/registries/BuiltInRegistries$RegistryBootstrap;)Lnet/minecraft/core/Registry;
 
 accessible field net/minecraft/resources/DelegatingOps delegate Lcom/mojang/serialization/DynamicOps;
-accessible field net/minecraft/client/renderer/entity/EntityRenderDispatcher playerRenderers Ljava/util/Map;
 
-accessible method net/minecraft/world/entity/Display setViewRange (F)V
 accessible method net/minecraft/world/entity/Display setTransformation (Lcom/mojang/math/Transformation;)V
 accessible method net/minecraft/world/entity/Display$TextDisplay setText (Lnet/minecraft/network/chat/Component;)V
 accessible method net/minecraft/world/entity/Display setBillboardConstraints (Lnet/minecraft/world/entity/Display$BillboardConstraints;)V

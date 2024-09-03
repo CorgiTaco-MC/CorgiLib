@@ -4,11 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import corgitaco.corgilib.core.CorgiLibRegistry;
-import corgitaco.corgilib.entity.condition.Condition;
 import corgitaco.corgilib.platform.ModPlatform;
-import net.minecraft.util.ExtraCodecs;
-
-import java.util.function.Function;
 
 public interface BlendingFunction {
     Codec<BlendingFunction> CODEC = Codec.lazyInitialized(() -> CorgiLibRegistry.BLENDING_FUNCTION.get().byNameCodec().dispatchStable(BlendingFunction::codec, MapCodec::assumeMapUnsafe));

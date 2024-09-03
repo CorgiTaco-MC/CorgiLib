@@ -1,7 +1,6 @@
 package corgitaco.corgilib.network;
 
 import corgitaco.corgilib.CorgiLib;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;

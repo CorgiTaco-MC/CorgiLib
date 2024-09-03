@@ -2,7 +2,6 @@ package corgitaco.corgilib.forge.platform;
 
 import com.google.auto.service.AutoService;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.Lifecycle;
 import corgitaco.corgilib.CorgiLib;
 import corgitaco.corgilib.platform.ModPlatform;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;

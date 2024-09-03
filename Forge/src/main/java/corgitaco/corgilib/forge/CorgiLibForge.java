@@ -12,7 +12,7 @@ import net.minecraftforge.registries.DataPackRegistryEvent;
 @Mod(CorgiLib.MOD_ID)
 public class CorgiLibForge {
 
-    public CorgiLibForge(FMLJavaModLoadingContext context) {
+    public CorgiLibForge(final FMLJavaModLoadingContext context) {
         IEventBus modEventBus = context.getModEventBus();
         modEventBus.addListener(this::commonSetup);
         CorgiLib.init();

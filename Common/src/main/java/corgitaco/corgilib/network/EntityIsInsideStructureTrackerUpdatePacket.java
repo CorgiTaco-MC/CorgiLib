@@ -3,9 +3,6 @@ package corgitaco.corgilib.network;
 
 import corgitaco.corgilib.CorgiLib;
 import corgitaco.corgilib.entity.IsInsideStructureTracker;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;

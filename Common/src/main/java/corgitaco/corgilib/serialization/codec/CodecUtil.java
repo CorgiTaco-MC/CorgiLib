@@ -18,7 +18,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 
