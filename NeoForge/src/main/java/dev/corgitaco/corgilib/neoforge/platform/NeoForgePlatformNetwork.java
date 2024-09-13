@@ -8,7 +8,6 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 @AutoService(PlatformNetwork.class)
 public class NeoForgePlatformNetwork implements PlatformNetwork {
-
     @Override
     public <P extends Packet> void sendToClient(ServerPlayer player, P packet) {
         PacketDistributor.sendToPlayer(player, packet);

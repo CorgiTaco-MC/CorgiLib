@@ -1,10 +1,12 @@
 package corgitaco.corgilib.forge.platform;
 
-import corgitaco.corgilib.forge.network.ForgeNetworkHandler;
+import com.google.auto.service.AutoService;
 import corgitaco.corgilib.network.Packet;
+import corgitaco.corgilib.forge.network.ForgeNetworkHandler;
 import corgitaco.corgilib.platform.PlatformNetwork;
 import net.minecraft.server.level.ServerPlayer;
 
+@AutoService(PlatformNetwork.class)
 public class ForgePlatformNetwork implements PlatformNetwork {
     @Override
     public <P extends Packet> void sendToClient(ServerPlayer player, P packet) {
