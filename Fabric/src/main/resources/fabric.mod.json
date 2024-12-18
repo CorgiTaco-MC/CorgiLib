@@ -24,7 +24,8 @@
     ]
   },
   "mixins": [
-    "corgilib-common.mixins.json"
+    "corgilib-common.mixins.json",
+    "corgilib-fabric.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.14",
