@@ -1,3 +1,6 @@
+# 5.0.0.3
+* Fix Night config hanging the server on shutdown
+
 # 5.0.0.2
 * Add `any_conditions_passes` entity condition.
 
