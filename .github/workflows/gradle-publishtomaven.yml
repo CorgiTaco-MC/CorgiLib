@@ -1,0 +1,32 @@
+name: Gradle Publish to Maven
+
+on:
+  push:
+    branches:
+      - 1.20.X
+      - 1.21.X
+
+jobs:
+  gradle:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: adopt
+          java-version: 21
+          cache: gradle
+
+      - name: Configure Gradle secrets
+        run: |
+          mkdir -p ~/.gradle/
+          echo "GRADLE_USER_HOME=${HOME}/.gradle" >> $GITHUB_ENV
+          echo "${{ secrets.REPO_LOGIN }}" > ~/.gradle/gradle.properties
+
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
+
+      - name: Build and Publish to Maven
+        run: ./gradlew publish publishAllPublicationsToJTDev-Maven-RepositoryRepository
