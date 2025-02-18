@@ -17,6 +17,13 @@ allprojects {
     group = project.properties["group"] as String
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+        vendor = JvmVendorSpec.JETBRAINS
+    }
+}
+
 subprojects {
     apply(plugin = "dev.architectury.loom")
     apply(plugin = "architectury-plugin")
@@ -56,6 +63,11 @@ subprojects {
 
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+            vendor = JvmVendorSpec.JETBRAINS
+        }
     }
 
     tasks.withType<JavaCompile>().configureEach {

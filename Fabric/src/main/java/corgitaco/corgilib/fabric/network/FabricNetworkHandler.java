@@ -37,10 +37,10 @@ public class FabricNetworkHandler {
     }
 
     private static <T extends Packet> void register(String path, Packet.Handler<T> handler) {
-        registerMessage(path, handler.clazz(), handler.write(), handler.read(), handler.handle());
+        registerMessage(path, handler.clazz(), handler.direction(), handler.write(), handler.read(), handler.handle());
     }
 
-    private static <T extends Packet> void registerMessage(String id, Class<T> clazz,
+    private static <T extends Packet> void registerMessage(String id, Class<T> clazz, Packet.PacketDirection direction,
                                                            BiConsumer<T, FriendlyByteBuf> encode,
                                                            Function<FriendlyByteBuf, T> decode,
                                                            Packet.Handle<T> handler) {
@@ -48,10 +48,12 @@ public class FabricNetworkHandler {
         PACKET_IDS.put(clazz, PACKET_ID.apply(id));
 
 
-        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT && direction == Packet.PacketDirection.SERVER_TO_CLIENT) {
             ClientProxy.registerClientReceiver(id, decode, handler);
         }
-        ServerProxy.registerServerReceiver(id, decode, handler);
+        if (direction == Packet.PacketDirection.CLIENT_TO_SERVER) {
+            ServerProxy.registerServerReceiver(id, decode, handler);
+        }
 
     }
 
