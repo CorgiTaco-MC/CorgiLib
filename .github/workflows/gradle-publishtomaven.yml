@@ -5,6 +5,7 @@ on:
     branches:
       - 1.20.X
       - 1.21.X
+      - 1.21.4
 
 jobs:
   gradle:
