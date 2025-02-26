@@ -7,7 +7,7 @@ import corgitaco.corgilib.network.UpdateStructureBoxPacketC2S;
 import corgitaco.corgilib.platform.PlatformNetwork;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.debug.DebugRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -40,7 +40,7 @@ public class StructureBoxEditor {
         if (structureBox != null && structureBlockPos != null && structureOffset != null) {
             AABB aabb = structureBox.move(structureOffset).move(structureBlockPos);
 
-            LevelRenderer.renderVoxelShape(stack, consumer, Shapes.create(aabb), -camX, -camY - 1, -camZ, 1, 0, 0, 0, b);
+            DebugRenderer.renderVoxelShape(stack, consumer, Shapes.create(aabb), -camX, -camY - 1, -camZ, 1, 0, 0, 0, b);
         }
     }
 

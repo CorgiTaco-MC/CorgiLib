@@ -29,6 +29,6 @@ Library with handy utilities.
 [[dependencies.corgilib]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.21,)"
+    versionRange="[1.21.4,)"
     ordering="NONE"
     side="BOTH"

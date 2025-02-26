@@ -1,3 +1,6 @@
+# 6.0.0.0
+- Update to 1.21.4
+
 # 5.0.0.4
 * Fix missing AutoService annotation in Forge Netowrk Handler
 

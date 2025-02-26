@@ -9,7 +9,6 @@
     "MixinServerLevel",
     "MixinStructureBlock",
     "chunk.MixinChunkAccess",
-    "chunk.MixinChunkSerializer",
     "chunk.MixinLevelChunk"
   ],
   "client": [

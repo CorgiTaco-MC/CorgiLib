@@ -40,9 +40,9 @@ public class InsideStructureTagCondition implements Condition {
         if (world.isClientSide) {
             return clientPasses((IsInsideStructureTracker.Access) entity);
         } else {
-            Registry<Structure> configuredStructureFeatures = world.registryAccess().registryOrThrow(Registries.STRUCTURE);
+            Registry<Structure> configuredStructureFeatures = world.registryAccess().lookupOrThrow(Registries.STRUCTURE);
             for (TagKey<Structure> structureTag : structureTags) {
-                HolderSet.Named<Structure> tag = configuredStructureFeatures.getOrCreateTag(structureTag);
+                HolderSet.Named<Structure> tag = configuredStructureFeatures.getOrThrow(structureTag);
 
                 List<Holder<Structure>> structures = tag.stream().toList();
 

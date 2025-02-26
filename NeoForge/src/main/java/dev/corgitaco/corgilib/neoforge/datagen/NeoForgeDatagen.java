@@ -9,7 +9,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 class NeoForgeDatagen {
 
     @SubscribeEvent
-    private static void onGatherData(GatherDataEvent event) {
+    private static void onGatherData(GatherDataEvent.Server event) {
 
     }
 

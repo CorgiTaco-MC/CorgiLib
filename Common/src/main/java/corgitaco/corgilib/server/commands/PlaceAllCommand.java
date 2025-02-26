@@ -81,7 +81,7 @@ public class PlaceAllCommand {
     }
 
     public static void dumpConfiguredFeatures(Vec3 position, ServerLevel serverLevel, String modId, BlockState state, int floorDepth) {
-        List<Holder.Reference<ConfiguredFeature<?, ?>>> list = serverLevel.registryAccess().registry(Registries.CONFIGURED_FEATURE).get().holders().filter(reference -> reference.key().location().getNamespace().equalsIgnoreCase(modId)).sorted(Comparator.comparing(holder -> holder.key().location())).toList();
+        List<Holder.Reference<ConfiguredFeature<?, ?>>> list = serverLevel.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE).listElements().filter(reference -> reference.key().location().getNamespace().equalsIgnoreCase(modId)).sorted(Comparator.comparing(holder -> holder.key().location())).toList();
         int size = list.size();
         int rowsAndCols = (int) (Math.floor(Math.sqrt(size) / 2D));
         generateObject(position, serverLevel, rowsAndCols, 32, state, floorDepth, (idx, offset) -> {
@@ -97,20 +97,20 @@ public class PlaceAllCommand {
     }
 
     public static void dumpStructures(Vec3 position, ServerLevel serverLevel, String modId, BlockState state, int floorDepth) {
-        List<Holder.Reference<Structure>> list = serverLevel.registryAccess().registry(Registries.STRUCTURE).get().holders().filter(reference -> reference.key().location().getNamespace().equalsIgnoreCase(modId)).sorted(Comparator.comparing(holder -> holder.key().location())).toList();
+        List<Holder.Reference<Structure>> list = serverLevel.registryAccess().lookupOrThrow(Registries.STRUCTURE).listElements().filter(reference -> reference.key().location().getNamespace().equalsIgnoreCase(modId)).sorted(Comparator.comparing(holder -> holder.key().location())).toList();
         int size = list.size();
         int rowsAndCols = (int) (Math.floor(Math.sqrt(size) / 2D));
         generateObject(position, serverLevel, rowsAndCols, 512, state, floorDepth, (idx, offset) -> {
             Holder.Reference<Structure> structureReference = list.get(idx);
             structureReference.unwrap().right().ifPresent(structure -> {
                 ChunkGenerator generator = serverLevel.getChunkSource().getGenerator();
-                StructureStart generatedStart = structure.generate(serverLevel.registryAccess(), generator, generator.getBiomeSource(), serverLevel.getChunkSource().randomState(), serverLevel.getStructureManager(), serverLevel.getSeed(), new ChunkPos(offset), 0, serverLevel, biomeHolder -> true);
+                StructureStart generatedStart = structure.generate(structureReference, serverLevel.dimension(), serverLevel.registryAccess(), generator, generator.getBiomeSource(), serverLevel.getChunkSource().randomState(), serverLevel.getStructureManager(), serverLevel.getSeed(), new ChunkPos(offset), 0, serverLevel, biomeHolder -> true);
 
                 BoundingBox boundingBox = generatedStart.getBoundingBox();
                 ChunkPos start = new ChunkPos(SectionPos.blockToSectionCoord(boundingBox.minX()), SectionPos.blockToSectionCoord(boundingBox.minZ()));
                 ChunkPos end = new ChunkPos(SectionPos.blockToSectionCoord(boundingBox.maxX()), SectionPos.blockToSectionCoord(boundingBox.maxZ()));
 
-                ChunkPos.rangeClosed(start, end).forEach((chunkPos) -> generatedStart.placeInChunk(serverLevel, serverLevel.structureManager(), generator, serverLevel.getRandom(), new BoundingBox(chunkPos.getMinBlockX(), serverLevel.getMinBuildHeight(), chunkPos.getMinBlockZ(), chunkPos.getMaxBlockX(), serverLevel.getMaxBuildHeight(), chunkPos.getMaxBlockZ()), chunkPos));
+                ChunkPos.rangeClosed(start, end).forEach((chunkPos) -> generatedStart.placeInChunk(serverLevel, serverLevel.structureManager(), generator, serverLevel.getRandom(), new BoundingBox(chunkPos.getMinBlockX(), serverLevel.getMinY(), chunkPos.getMinBlockZ(), chunkPos.getMaxBlockX(), serverLevel.getMaxY(), chunkPos.getMaxBlockZ()), chunkPos));
             });
         });
     }

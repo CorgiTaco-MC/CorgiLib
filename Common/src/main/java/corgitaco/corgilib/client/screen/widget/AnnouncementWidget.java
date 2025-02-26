@@ -1,5 +1,5 @@
 package corgitaco.corgilib.client.screen.widget;
-
+/*
 import com.google.common.collect.Lists;
 import corgitaco.corgilib.CorgiLib;
 import corgitaco.corgilib.client.AnnouncementInfo;
@@ -12,10 +12,11 @@ import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.ConfirmLinkScreen;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 
 import java.util.List;
 
@@ -122,10 +123,10 @@ public class AnnouncementWidget extends AbstractWidget {
     @Override
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         if (visible) {
-            guiGraphics.fill(getX(), getY(), getX() + getWidth(), getY() + getHeight(), FastColor.ARGB32.color(255, 255, 0, 0));
+            guiGraphics.fill(getX(), getY(), getX() + getWidth(), getY() + getHeight(), ARGB.color(255, 255, 0, 0));
             guiGraphics.setColor(0.3F, 0.3F, 0.3F, 1);
 
-            guiGraphics.blit(Screen.MENU_BACKGROUND, getX() + 1, getY() + 1, getWidth() - 2, getHeight() - 2, 0.0F, 0.0F, this.width, this.height, 32, 32);
+            guiGraphics.blit(RenderType::guiOverlay, Screen.MENU_BACKGROUND, getX() + 1, getY() + 1, getWidth() - 2, getHeight() - 2, 0.0F, 0.0F, this.width, this.height, 32, 32);
             guiGraphics.setColor(1, 1, 1, 1);
 
             for (Renderable child : this.children) {
@@ -133,7 +134,7 @@ public class AnnouncementWidget extends AbstractWidget {
             }
             if (imageWidth > 0) {
                 int renderHeight = getHeight() - 10;
-                guiGraphics.blit(CORGI_TACO_WAVE, getX() + 10, getY() + 5, imageWidth, renderHeight, 0.0F, 0.0F, 553, 666, 553, 666);
+                guiGraphics.blit(RenderType::guiTextured, CORGI_TACO_WAVE, getX() + 10, getY() + 5, imageWidth, renderHeight, 0, 0, 553, 666, 553, 666);
             }
         }
     }
@@ -160,4 +161,4 @@ public class AnnouncementWidget extends AbstractWidget {
     @Override
     public void playDownSound(SoundManager handler) {
     }
-}
+}*/
