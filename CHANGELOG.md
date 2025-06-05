@@ -1,5 +1,7 @@
 # 5.0.0.4
-* Fix missing AutoService annotation in Forge Netowrk Handler
+* Fix missing AutoService annotation in Forge Network Handler
+* Fix concurrency issues with random scheduled ticks.
+* Update Night Config
 
 # 5.0.0.3
 * Fix Night config hanging the server on shutdown
