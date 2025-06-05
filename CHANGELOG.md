@@ -1,3 +1,7 @@
+# 6.0.0.1
+* Fix concurrency issues with random scheduled ticks.
+* Update Night Config
+
 # 6.0.0.0
 - Update to 1.21.4
 
