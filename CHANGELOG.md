@@ -1,3 +1,7 @@
+# 4.0.3.4
+* Fix concurrency issues with random scheduled ticks.
+* Update Night Config
+
 # 4.0.3.3
 * Fix Night config hanging the server on shutdown
 
