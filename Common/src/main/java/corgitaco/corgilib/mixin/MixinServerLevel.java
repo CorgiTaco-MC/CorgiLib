@@ -14,6 +14,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.List;
+
 @Mixin(ServerLevel.class)
 public abstract class MixinServerLevel extends Level {
 
@@ -24,9 +26,13 @@ public abstract class MixinServerLevel extends Level {
 
     @Inject(method = "tickChunk", at = @At("HEAD"))
     private void tickScheduledRandomTicks(LevelChunk chunk, int randomTickSpeed, CallbackInfo ci) {
-        ((RandomTickScheduler) chunk).getScheduledRandomTicks().removeIf(scheduledPos -> {
-            chunk.getBlockState(scheduledPos).randomTick((ServerLevel) (Object) this, scheduledPos, this.random);
-            return true;
-        });
+        var original = ((RandomTickScheduler) chunk).getScheduledRandomTicks();
+        if (original.isEmpty()) return;
+
+        var tmp = List.copyOf(original);
+        original.clear();
+
+        tmp.forEach(scheduledPos -> chunk.getBlockState(scheduledPos).randomTick((ServerLevel) (Object) this, scheduledPos, this.random));
+        ;
     }
 }
