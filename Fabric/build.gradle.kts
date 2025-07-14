@@ -3,7 +3,7 @@ import com.hypherionmc.modpublisher.properties.ModLoader
 import com.hypherionmc.modpublisher.properties.ReleaseType
 
 plugins {
-    id("com.github.johnrengelman.shadow")
+    id("com.gradleup.shadow")
     id("com.hypherionmc.modutils.modpublisher") version "2.+"
 }
 
@@ -76,7 +76,7 @@ publisher {
 
     curseID.set(project.properties["curseforge_id"].toString())
     modrinthID.set(project.properties["modrinth_id"].toString())
-    githubRepo.set("https://github.com/CorgiTaco/Oh-The-Trees-Youll-Grow")
+    githubRepo.set("https://github.com/CorgiTaco-MC/CorgiLib")
     setReleaseType(ReleaseType.RELEASE)
     projectVersion.set("$minecraftVersion-${project.version}-fabric")
     displayName.set("${project.properties["mod_name"]}-fabric-$minecraftVersion-${project.version}")

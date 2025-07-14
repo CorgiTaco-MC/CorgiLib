@@ -36,6 +36,5 @@ public abstract class MixinServerLevel extends Level {
         original.clear();
 
         tmp.forEach(scheduledPos -> chunk.getBlockState(scheduledPos).randomTick((ServerLevel) (Object) this, scheduledPos, this.random));
-        ;
     }
 }

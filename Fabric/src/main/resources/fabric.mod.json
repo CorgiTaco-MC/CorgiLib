@@ -9,8 +9,8 @@
     "Joseph T. McQuigg (JT122406)"
   ],
   "contact": {
-    "homepage": "https://github.com/CorgiTaco/CorgiLib",
-    "sources": "https://github.com/CorgiTaco/CorgiLib"
+    "homepage": "https://github.com/CorgiTaco-MC/CorgiLib",
+    "sources": "https://github.com/CorgiTaco-MC/CorgiLib"
   },
   "license": "LGPLv3",
   "icon": "assets/corgilib/corgilib.png",
@@ -24,8 +24,7 @@
     ]
   },
   "mixins": [
-    "corgilib-common.mixins.json",
-    "corgilib-fabric.mixins.json"
+    "corgilib-common.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.14",

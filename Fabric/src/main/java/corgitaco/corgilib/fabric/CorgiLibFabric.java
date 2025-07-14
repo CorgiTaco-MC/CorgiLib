@@ -1,10 +1,12 @@
 package corgitaco.corgilib.fabric;
 
+import com.electronwill.nightconfig.core.file.FileWatcher;
 import corgitaco.corgilib.CorgiLib;
 import corgitaco.corgilib.fabric.network.FabricNetworkHandler;
 import corgitaco.corgilib.server.commands.CorgiLibCommands;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 
 import java.util.Objects;
 
@@ -27,5 +29,6 @@ public class CorgiLibFabric implements ModInitializer {
         CorgiLib.init();
         FabricNetworkHandler.init();
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> CorgiLibCommands.registerCommands(dispatcher, registryAccess));
+        ServerLifecycleEvents.SERVER_STOPPED.register(server -> FileWatcher.defaultInstance().stop());
     }
 }

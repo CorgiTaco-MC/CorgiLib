@@ -7,8 +7,6 @@ import org.apache.logging.log4j.Logger;
 
 public class CorgiLib {
 
-	public static final boolean IMGUI_TEST = false;
-
 	public static final String MOD_ID = "corgilib";
 	public static final String MOD_NAME = "CorgiLib";
 	public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
