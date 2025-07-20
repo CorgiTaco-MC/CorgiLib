@@ -1,7 +1,7 @@
 modLoader="javafml"
 loaderVersion="[4,)"
 license="LGPLv3"
-issueTrackerURL="https://github.com/CorgiTaco/CorgiLib/issues"
+issueTrackerURL="https://github.com/CorgiTaco-MC/CorgiLib/issues"
 [[mods]]
 modId="corgilib"
 version="${version}" #mandatory
