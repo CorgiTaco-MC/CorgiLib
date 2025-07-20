@@ -1,3 +1,6 @@
+# 5.0.0.5
+- Move Night Config Shutdown to Fabric Server Lifecycle Event
+
 # 5.0.0.4
 * Fix missing AutoService annotation in Forge Network Handler
 * Fix concurrency issues with random scheduled ticks.
