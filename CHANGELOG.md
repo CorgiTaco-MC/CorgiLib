@@ -1,6 +1,7 @@
 # 6.0.0.2
 - Move Night Config Shutdown to Fabric Server Lifecycle Event
 - Fix Commands Not being Registered on NeoForge
+- Change Maven Group ID to `dev.corgitaco`
 
 # 6.0.0.1
 * Fix concurrency issues with random scheduled ticks.

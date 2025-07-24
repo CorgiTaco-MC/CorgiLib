@@ -22,7 +22,7 @@ public class CorgiLibFabric implements ModInitializer {
     public static void initializeCorgiLib(String initializedFrom) {
         Objects.requireNonNull(initializedFrom, "BYG must be told where it was initialized from.");
         if (firstInitialized != null) {
-            CorgiLib.LOGGER.debug(String.format("Attempted to Initialize Oh The Biomes You'll Go (BYG) from \"%s\" but BYG already was initialized from \"%s\", this should not be a problem.", initializedFrom, firstInitialized));
+            CorgiLib.LOGGER.debug(String.format("Attempted to Initialize Oh The Biomes We've Gone (BWG) from \"%s\" but BWG already was initialized from \"%s\", this should not be a problem.", initializedFrom, firstInitialized));
             return;
         }
         firstInitialized = initializedFrom;
