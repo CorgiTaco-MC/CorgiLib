@@ -1,3 +1,6 @@
+# 5.0.0.7
+- Fix Jankson being shadowed to the wrong package in Forge and NeoForge
+
 # 5.0.0.6
 - Fix Jankson being shadowed to the wrong package in Fabric
 

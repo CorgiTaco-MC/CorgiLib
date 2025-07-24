@@ -50,7 +50,6 @@ dependencies {
     "shadowBundle"(project(":Common", "transformProductionForge")) { isTransitive = false }
 
     implementation("blue.endless:jankson:${project.properties["jankson_version"]}")?.let { "shadowBundle"(it) }
-    // Hack fix for now, force jopt-simple to be exactly 5.0.4 because Mojang ships that version, but some transitive dependencies request 6.0+
 }
 
 tasks {
@@ -66,7 +65,7 @@ tasks {
         exclude("architectury.common.json")
         configurations = listOf(project.configurations.getByName("shadowBundle"))
         archiveClassifier.set("dev-shadow")
-        relocate("blue.endless.jankson", "${project.group}.shadow.blue.endless.jankson")
+        relocate("blue.endless.jankson", "corgitaco.corgilib.shadow.blue.endless.jankson")
     }
 
     remapJar {
