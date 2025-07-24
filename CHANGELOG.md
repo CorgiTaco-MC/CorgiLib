@@ -1,3 +1,6 @@
+# 5.0.0.6
+- Fix Jankson being shadowed to the wrong package in Fabric
+
 # 5.0.0.5
 - Move Night Config Shutdown to Fabric Server Lifecycle Event
 - Change maven coordinates to `dev.corgitaco.corgilib` from `corgitaco.corgilib`.

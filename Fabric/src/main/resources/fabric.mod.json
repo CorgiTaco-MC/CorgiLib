@@ -10,7 +10,8 @@
   ],
   "contact": {
     "homepage": "https://github.com/CorgiTaco/CorgiLib",
-    "sources": "https://github.com/CorgiTaco/CorgiLib"
+    "sources": "https://github.com/CorgiTaco/CorgiLib",
+    "issues": "https://github.com/CorgiTaco/CorgiLib/issues"
   },
   "license": "LGPLv3",
   "icon": "assets/corgilib/corgilib.png",
