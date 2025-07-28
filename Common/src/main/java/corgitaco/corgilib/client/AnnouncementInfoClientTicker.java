@@ -9,6 +9,8 @@ import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class AnnouncementInfoClientTicker {
@@ -35,9 +37,15 @@ public class AnnouncementInfoClientTicker {
                     player.displayClientMessage(Component.empty(), false);
                     player.displayClientMessage(announcementInfo.desc(), false);
                     Component component = announcementInfo.actionButtonText();
-                    MutableComponent open = ComponentUtils.wrapInSquareBrackets(component.copy().withStyle(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, announcementInfo.url())).withBold(true).withColor(ChatFormatting.GREEN)));
+                    MutableComponent open = ComponentUtils.wrapInSquareBrackets(component.copy().withStyle(style -> {
+                        try {
+                            return style.withClickEvent(new ClickEvent.OpenUrl(new URI(announcementInfo.url()))).withBold(true).withColor(ChatFormatting.GREEN);
+                        } catch (URISyntaxException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }));
                     player.displayClientMessage(Component.empty(), false);
-                    MutableComponent dismiss = Component.literal("Dismiss").withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY).withStyle(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/corgilib_client announcement dismiss")));
+                    MutableComponent dismiss = Component.literal("Dismiss").withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY).withStyle(style -> style.withClickEvent(new ClickEvent.RunCommand("/corgilib_client announcement dismiss")));
                     player.displayClientMessage(Component.literal("").append(open).append(" | ").append(dismiss), false);
                 }
             }

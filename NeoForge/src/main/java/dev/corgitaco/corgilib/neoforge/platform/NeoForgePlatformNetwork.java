@@ -4,6 +4,7 @@ import com.google.auto.service.AutoService;
 import corgitaco.corgilib.network.Packet;
 import corgitaco.corgilib.platform.PlatformNetwork;
 import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 @AutoService(PlatformNetwork.class)
@@ -15,6 +16,6 @@ public class NeoForgePlatformNetwork implements PlatformNetwork {
 
     @Override
     public <P extends Packet> void sendToServer(P packet) {
-        PacketDistributor.sendToServer(packet);
+        ClientPacketDistributor.sendToServer(packet);
     }
 }

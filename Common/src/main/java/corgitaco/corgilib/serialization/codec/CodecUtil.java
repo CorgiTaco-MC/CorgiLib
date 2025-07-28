@@ -57,22 +57,6 @@ public class CodecUtil {
 
     }, Difficulty::getKey);
 
-
-
-    public static final Codec<ClickEvent.Action> CLICK_EVENT_ACTION_CODEC = Codec.STRING.comapFlatMap(s -> {
-        try {
-            return DataResult.success(ClickEvent.Action.valueOf(s));
-        } catch (Exception e) {
-            return DataResult.error(e::getMessage);
-        }
-    }, ClickEvent.Action::name);
-
-
-    public static final Codec<ClickEvent> CLICK_EVENT_CODEC = RecordCodecBuilder.create((builder) -> builder.group(
-            CLICK_EVENT_ACTION_CODEC.fieldOf("action").forGetter(ClickEvent::getAction),
-            Codec.STRING.fieldOf("value").forGetter((ClickEvent::getValue))
-    ).apply(builder, ClickEvent::new));
-
     public static Function<String, DataResult<Integer>> validateColorHex() {
         return input -> {
 
