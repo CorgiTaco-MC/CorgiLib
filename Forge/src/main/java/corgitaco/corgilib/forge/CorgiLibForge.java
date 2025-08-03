@@ -4,6 +4,7 @@ import corgitaco.corgilib.CorgiLib;
 import corgitaco.corgilib.forge.network.ForgeNetworkHandler;
 import corgitaco.corgilib.forge.platform.ForgePlatform;
 import corgitaco.corgilib.server.commands.CorgiLibCommands;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -20,6 +21,6 @@ public class CorgiLibForge {
         CorgiLib.init();
         ForgePlatform.CACHED.values().forEach(deferredRegister -> deferredRegister.register(modEventBus));
         modEventBus.<DataPackRegistryEvent.NewRegistry>addListener(newRegistry -> ForgePlatform.DATAPACK_REGISTRIES.forEach(newRegistryConsumer -> newRegistryConsumer.accept(newRegistry)));
-        modEventBus.addListener((RegisterCommandsEvent event) -> CorgiLibCommands.registerCommands(event.getDispatcher(), event.getBuildContext()));
+        MinecraftForge.EVENT_BUS.addListener((RegisterCommandsEvent event) -> CorgiLibCommands.registerCommands(event.getDispatcher(), event.getBuildContext()));
     }
 }

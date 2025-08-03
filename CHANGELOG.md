@@ -1,3 +1,6 @@
+# 6.0.0.3
+- Fix NeoForge and Forge Crashes on Startup
+
 # 6.0.0.2
 - Move Night Config Shutdown to Fabric Server Lifecycle Event
 - Fix Commands Not being Registered on NeoForge

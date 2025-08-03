@@ -2,9 +2,11 @@ package dev.corgitaco.corgilib.neoforge;
 
 import corgitaco.corgilib.CorgiLib;
 import corgitaco.corgilib.server.commands.CorgiLibCommands;
+import dev.corgitaco.corgilib.neoforge.network.NeoForgeNetworkHandler;
 import dev.corgitaco.corgilib.neoforge.platform.NeoForgePlatform;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
@@ -19,6 +21,7 @@ public class CorgiLibNeoForge {
         NeoForgePlatform.CACHED.values().forEach(deferredRegister -> deferredRegister.register(modEventBus));
         modEventBus.addListener(DataPackRegistryEvent.NewRegistry.class, newRegistry -> NeoForgePlatform.DATAPACK_REGISTRIES.forEach(newRegistryConsumer -> newRegistryConsumer.accept(newRegistry)));
         modEventBus.addListener(NewRegistryEvent.class, newRegistry -> NeoForgePlatform.NEW_REGISTRIES.forEach(newRegistryConsumer -> newRegistryConsumer.accept(newRegistry)));
-        modEventBus.addListener((RegisterCommandsEvent event) -> CorgiLibCommands.registerCommands(event.getDispatcher(), event.getBuildContext()));
+        NeoForge.EVENT_BUS.addListener((RegisterCommandsEvent event) -> CorgiLibCommands.registerCommands(event.getDispatcher(), event.getBuildContext()));
+        modEventBus.addListener(NeoForgeNetworkHandler::register);
     }
 }
