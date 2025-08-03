@@ -1,3 +1,6 @@
+# 5.0.0.8
+- Fix Datagen class not being excluded from NeoForge builds
+
 # 5.0.0.7
 - Fix Jankson being shadowed to the wrong package in Forge and NeoForge
 
