@@ -9,7 +9,7 @@ Code used across Corgi Taco's project's in one place.
 ### Maven Information
 - Releases: https://maven.jt-dev.tech/releases
 - Snapshots: https://maven.jt-dev.tech/snapshots
-    - Common: corgitaco.corgilib:Corgilib-Common:{version}
-    - Fabric: corgitaco.corgilib:Corgilib-Fabric:{version}
-    - Forge: corgitaco.corgilib:Corgilib-Forge:{version}
-    - NeoForge: corgitaco.corgilib:Corgilib-NeoForge:{version}
+    - Common: dev.corgitaco:Corgilib-Common:{version}
+    - Fabric: dev.corgitaco:Corgilib-Fabric:{version}
+    - Forge: dev.corgitaco:Corgilib-Forge:{version}
+    - NeoForge: dev.corgitaco:Corgilib-NeoForge:{version}

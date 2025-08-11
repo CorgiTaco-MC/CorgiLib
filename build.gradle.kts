@@ -3,7 +3,7 @@ import net.fabricmc.loom.api.LoomGradleExtensionAPI
 plugins {
     id("architectury-plugin") version "3.4-SNAPSHOT"
     id("dev.architectury.loom") version "1.10-SNAPSHOT" apply false
-    id("com.gradleup.shadow") version "8.3.8" apply false
+    id("com.gradleup.shadow") version "9.0.1" apply false
     java
     idea
     `maven-publish`
