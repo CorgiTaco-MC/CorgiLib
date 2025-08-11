@@ -1,3 +1,6 @@
+# 4.0.3.5
+- Move Night Config Shutdown to Fabric Server Lifecycle Event
+
 # 4.0.3.4
 * Fix concurrency issues with random scheduled ticks.
 * Update Night Config
