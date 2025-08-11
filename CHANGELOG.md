@@ -1,3 +1,5 @@
+# 6.0.0.4
+
 # 6.0.0.3
 - Fix NeoForge and Forge Crashes on Startup
 
