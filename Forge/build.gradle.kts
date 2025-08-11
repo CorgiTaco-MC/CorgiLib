@@ -72,7 +72,7 @@ tasks {
         exclude("architectury.common.json")
         configurations = listOf(project.configurations.getByName("shadowBundle"))
         archiveClassifier.set("dev-shadow")
-        relocate("blue.endless.jankson", "${project.group}.shadow.blue.endless.jankson")
+        relocate("blue.endless.jankson", "corgitaco.corgilib.shadow.blue.endless.jankson")
     }
 
     remapJar {
