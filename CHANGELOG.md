@@ -1,6 +1,7 @@
 # 4.0.3.5
 - Move Night Config Shutdown to Fabric Server Lifecycle Event
 - Change Maven Group ID to dev.corgitaco
+- Update Include Toml to 3.8.3
 
 # 4.0.3.4
 * Fix concurrency issues with random scheduled ticks.
