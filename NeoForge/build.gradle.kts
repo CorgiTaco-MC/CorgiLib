@@ -60,7 +60,7 @@ tasks {
     }
 
     shadowJar {
-        exclude("architectury.common.json", "dev/corgi/corgilib/neoforge/datagen/**")
+        exclude("architectury.common.json", "dev/corgitaco/corgilib/neoforge/datagen/**")
         configurations = listOf(project.configurations.getByName("shadowBundle"))
         archiveClassifier.set("dev-shadow")
         relocate("blue.endless.jankson", "corgitaco.corgilib.shadow.blue.endless.jankson")
