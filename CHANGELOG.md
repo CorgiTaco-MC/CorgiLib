@@ -1,3 +1,8 @@
+# 7.0.0.1
+
+# 7.0.0.0
+- Update to 1.21.8
+
 # 6.0.0.2
 - Move Night Config Shutdown to Fabric Server Lifecycle Event
 - Fix Commands Not being Registered on NeoForge
