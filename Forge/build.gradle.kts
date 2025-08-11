@@ -28,9 +28,6 @@ configurations {
         isCanBeResolved = true
         isCanBeConsumed = false
     }
-    configureEach {
-        resolutionStrategy.force("net.sf.jopt-simple:jopt-simple:5.0.4")
-    }
 }
 
 loom {
@@ -50,7 +47,6 @@ dependencies {
     "shadowBundle"(project(":Common", "transformProductionForge")) { isTransitive = false }
 
     implementation("blue.endless:jankson:${project.properties["jankson_version"]}")?.let { "shadowBundle"(it) }
-    // Hack fix for now, force jopt-simple to be exactly 5.0.4 because Mojang ships that version, but some transitive dependencies request 6.0+
 }
 
 tasks {
