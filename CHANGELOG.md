@@ -1,3 +1,6 @@
+# 8.0.0.0
+- Update to 1.21.10/9
+
 # 7.0.0.1
 - Update included toml to 3.8.3
 

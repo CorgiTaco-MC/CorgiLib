@@ -159,7 +159,6 @@ public class StructureBoxEditor {
     }
 
     public static boolean isKeyDown(Minecraft minecraft, int keyValue) {
-        long window = minecraft.getWindow().getWindow();
-        return InputConstants.isKeyDown(window, keyValue);
+        return InputConstants.isKeyDown(minecraft.getWindow(), keyValue);
     }
 }

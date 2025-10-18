@@ -32,7 +32,7 @@ public record UpdateStructureBoxPacketC2S(
 
     @Override
     public void handle(@Nullable Level level, @Nullable Player player) {
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             BlockEntity blockEntity = level.getBlockEntity(this.pos);
 
             if (blockEntity instanceof StructureBlockEntity structureBlockEntity) {

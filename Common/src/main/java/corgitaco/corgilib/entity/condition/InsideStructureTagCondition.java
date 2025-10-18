@@ -37,7 +37,7 @@ public class InsideStructureTagCondition implements Condition {
     public boolean passes(ConditionContext conditionContext) {
         Level world = conditionContext.world();
         LivingEntity entity = conditionContext.entity();
-        if (world.isClientSide) {
+        if (world.isClientSide()) {
             return clientPasses((IsInsideStructureTracker.Access) entity);
         } else {
             Registry<Structure> configuredStructureFeatures = world.registryAccess().lookupOrThrow(Registries.STRUCTURE);

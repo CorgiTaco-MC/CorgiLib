@@ -14,7 +14,7 @@ public class IsInsideStructureTracker {
 
     public void setInside(Level world, Entity entity, IsInside isInside) {
         this.tracker = isInside;
-        if (!world.isClientSide) {
+        if (!world.isClientSide()) {
             PlatformNetwork.NETWORK.sendToAllClients(((ServerLevel) world).players(), new EntityIsInsideStructureTrackerUpdatePacket(entity.getId(), isInside));
         }
     }

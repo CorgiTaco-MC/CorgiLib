@@ -26,7 +26,7 @@ public class MixinStructureBlock {
         if (player.getItemInHand(InteractionHand.MAIN_HAND).is(Items.GOLDEN_AXE)) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof StructureBlockEntity structureBlockEntity) {
-                if (level.isClientSide) {
+                if (level.isClientSide()) {
                     StructureBoxEditor.structureBox = StructureBoxEditor.getStructureWorldBox(structureBlockEntity);
                     StructureBoxEditor.structureBlockPos = structureBlockEntity.getBlockPos();
                     StructureBoxEditor.structureOffset = structureBlockEntity.getStructurePos();

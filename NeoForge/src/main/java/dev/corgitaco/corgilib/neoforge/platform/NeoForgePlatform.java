@@ -41,7 +41,7 @@ public class NeoForgePlatform implements ModPlatform {
 
     @Override
     public boolean isDevelopmentEnvironment() {
-        return !FMLEnvironment.production;
+        return !FMLEnvironment.isProduction();
     }
 
     @Override

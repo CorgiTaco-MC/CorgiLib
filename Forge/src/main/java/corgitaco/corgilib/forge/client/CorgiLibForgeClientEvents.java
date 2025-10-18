@@ -24,8 +24,8 @@ public class CorgiLibForgeClientEvents {
  */
 
     @SubscribeEvent
-    public static void playerTick(TickEvent.PlayerTickEvent event) {
-        AnnouncementInfoClientTicker.checkedAnnouncementTicker(event.player);
+    public static void playerTick(TickEvent.PlayerTickEvent.Pre event) {
+        AnnouncementInfoClientTicker.checkedAnnouncementTicker(event.player());
     }
 
     @SubscribeEvent

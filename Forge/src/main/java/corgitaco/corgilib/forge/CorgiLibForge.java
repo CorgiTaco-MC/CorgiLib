@@ -19,7 +19,7 @@ public class CorgiLibForge {
         FMLCommonSetupEvent.getBus(modEventBus).addListener(fmlCommonSetupEvent -> ForgeNetworkHandler.init());
         CorgiLib.init();
         ForgePlatform.CACHED.values().forEach(deferredRegister -> deferredRegister.register(modEventBus));
-        DataPackRegistryEvent.NewRegistry.getBus(modEventBus).addListener(newRegistry -> ForgePlatform.DATAPACK_REGISTRIES.forEach(newRegistryConsumer -> newRegistryConsumer.accept(newRegistry)));
+        DataPackRegistryEvent.NewRegistry.BUS.addListener(newRegistry -> ForgePlatform.DATAPACK_REGISTRIES.forEach(newRegistryConsumer -> newRegistryConsumer.accept(newRegistry)));
         RegisterCommandsEvent.BUS.addListener(commandBus -> CorgiLibCommands.registerCommands(commandBus.getDispatcher(), commandBus.getBuildContext()));
     }
 }
