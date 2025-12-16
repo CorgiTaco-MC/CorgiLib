@@ -7,7 +7,7 @@ import corgitaco.corgilib.network.UpdateStructureBoxPacketC2S;
 import corgitaco.corgilib.platform.PlatformNetwork;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.debug.DebugRenderer;
+import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -22,7 +22,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.Shapes;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
@@ -35,12 +34,12 @@ public class StructureBoxEditor {
     public static BlockPos structureBlockPos;
     public static BlockPos structureOffset;
 
-
-    public static void render(PoseStack stack, VertexConsumer consumer, double camX, double camY, double camZ, boolean b) {
+    public static void render(PoseStack stack, VertexConsumer consumer, double camX, double camY, double camZ, boolean b, LevelRenderer levelRenderer) {
         if (structureBox != null && structureBlockPos != null && structureOffset != null) {
             AABB aabb = structureBox.move(structureOffset).move(structureBlockPos);
 
-            DebugRenderer.renderVoxelShape(stack, consumer, Shapes.create(aabb), -camX, -camY - 1, -camZ, 1, 0, 0, 0, b);
+
+            //DebugRenderer.renderVoxelShape(stack, consumer, Shapes.create(aabb), -camX, -camY - 1, -camZ, 1, 0, 0, 0, b);
         }
     }
 

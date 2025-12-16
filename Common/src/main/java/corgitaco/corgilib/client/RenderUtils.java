@@ -2,14 +2,14 @@ package corgitaco.corgilib.client;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.util.Mth;
 import org.joml.Matrix4f;
 
 public class RenderUtils {
 
     public static void drawFlatColoredSphere(Matrix4f pose, MultiBufferSource bufferSource, float radius, float originX, float originY, float originZ, float r, float g, float b, float a) {
-        drawSphere(pose, bufferSource.getBuffer(RenderType.debugQuads()), radius, originX, originY, originZ, 15, 15, (pose1, consumer1, x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3) -> {
+        drawSphere(pose, bufferSource.getBuffer(RenderTypes.debugQuads()), radius, originX, originY, originZ, 15, 15, (pose1, consumer1, x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3) -> {
             consumer1.addVertex(pose1, x0, y0, z0).setColor(r, g, b, a);
             consumer1.addVertex(pose1, x1, y1, z1).setColor(r, g, b, a);
             consumer1.addVertex(pose1, x2, y2, z2).setColor(r, g, b, a);
@@ -58,7 +58,7 @@ public class RenderUtils {
     }
 
     public static void drawRing(Matrix4f pose, MultiBufferSource bufferSource, float distance, float originX, float originY, float originZ, float r, float g, float b, float a) {
-        drawRing(pose, bufferSource.getBuffer(RenderType.debugQuads()), distance, originX, originY, originZ, 15, 2, (pose1, vertexConsumer1, x1, y1, z1, x2, z2, y2) -> {
+        drawRing(pose, bufferSource.getBuffer(RenderTypes.debugQuads()), distance, originX, originY, originZ, 15, 2, (pose1, vertexConsumer1, x1, y1, z1, x2, z2, y2) -> {
             vertexConsumer1.addVertex(pose, x1, y1, z1).setColor(r, g, b, a);
             vertexConsumer1.addVertex(pose, x2, y1, z2).setColor(r, g, b, a);
             vertexConsumer1.addVertex(pose, x2, y2, z2).setColor(r, g, b, a);

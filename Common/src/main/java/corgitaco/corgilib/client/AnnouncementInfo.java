@@ -11,10 +11,10 @@ import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import corgitaco.corgilib.CorgiLib;
 import corgitaco.corgilib.platform.ModPlatform;
-import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
+import net.minecraft.util.Util;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.FileNotFoundException;

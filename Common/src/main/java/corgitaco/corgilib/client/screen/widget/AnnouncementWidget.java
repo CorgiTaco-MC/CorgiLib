@@ -15,13 +15,13 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 
 import java.util.List;
 
 public class AnnouncementWidget extends AbstractWidget {
-    private static final ResourceLocation CORGI_TACO_WAVE = CorgiLib.createLocation("textures/gui/corgi_taco_wave.png");
+    private static final Identifier CORGI_TACO_WAVE = CorgiLib.createLocation("textures/gui/corgi_taco_wave.png");
 
     private final List<AbstractWidget> children = Lists.newArrayList();
 

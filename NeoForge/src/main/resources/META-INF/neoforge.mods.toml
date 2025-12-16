@@ -13,7 +13,7 @@ credits="Joseph T. McQuigg (JT122406)"
 description='''
 Library with handy utilities.
 '''
-# A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
+
 [[dependencies.corgilib]] #optional
 modId="neoforge" #mandatory
 type="required"#mandatory
@@ -24,7 +24,7 @@ side="BOTH"
 [[dependencies.corgilib]]
 modId="minecraft"
 type="required"
-versionRange="[1.21.4,)"
+versionRange="[1.21.11,)"
 ordering="NONE"
 side="BOTH"
 

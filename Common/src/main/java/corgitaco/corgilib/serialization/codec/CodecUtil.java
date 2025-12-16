@@ -9,9 +9,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
@@ -38,7 +37,7 @@ public class CodecUtil {
     public static final Codec<Item> ITEM_CODEC = createLoggedExceptionRegistryCodec(BuiltInRegistries.ITEM);
     public static final Codec<MobEffect> EFFECT_CODEC = createLoggedExceptionRegistryCodec(BuiltInRegistries.MOB_EFFECT);
 
-    public static final Codec<ResourceKey<Biome>> BIOME_CODEC = ResourceLocation.CODEC.comapFlatMap(resourceLocation -> DataResult.success(ResourceKey.create(Registries.BIOME, resourceLocation)), ResourceKey::location);
+    public static final Codec<ResourceKey<Biome>> BIOME_CODEC = Identifier.CODEC.comapFlatMap(Identifier -> DataResult.success(ResourceKey.create(Registries.BIOME, Identifier)), ResourceKey::identifier);
 
     public static final Codec<EquipmentSlot> EQUIPMENT_SLOT_CODEC = Codec.STRING.comapFlatMap(s -> {
         final EquipmentSlot equipmentSlotType = EquipmentSlot.byName(s.toLowerCase());
@@ -99,7 +98,7 @@ public class CodecUtil {
     }
 
     public static <T> Codec<T> createLoggedExceptionRegistryCodec(Registry<T> registry) {
-        return ResourceLocation.CODEC.comapFlatMap(location -> {
+        return Identifier.CODEC.comapFlatMap(location -> {
             final Optional<T> result = registry.getOptional(location);
 
             if (result.isEmpty()) {

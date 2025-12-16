@@ -2,11 +2,11 @@ package corgitaco.corgilib.forge.network;
 
 import corgitaco.corgilib.CorgiLib;
 import corgitaco.corgilib.network.Packet;
-import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Util;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.network.Channel;

@@ -33,7 +33,7 @@ public interface BlendingFunction {
 
     record EaseInOutCirc() implements BlendingFunction {
         public static final EaseInOutCirc INSTANCE = new EaseInOutCirc();
-        public static final Codec<EaseInOutCirc> CODEC = Codec.unit(() -> INSTANCE);
+        public static final Codec<EaseInOutCirc> CODEC = MapCodec.unitCodec(() -> INSTANCE);
 
         @Override
         public double apply(double factor) {
@@ -48,7 +48,7 @@ public interface BlendingFunction {
 
     record EaseOutCubic() implements BlendingFunction {
         public static final EaseOutCubic INSTANCE = new EaseOutCubic();
-        public static final Codec<EaseOutCubic> CODEC = Codec.unit(() -> INSTANCE);
+        public static final Codec<EaseOutCubic> CODEC = MapCodec.unitCodec(() -> INSTANCE);
 
         @Override
         public double apply(double factor) {
@@ -64,7 +64,7 @@ public interface BlendingFunction {
 
     record EaseOutBounce() implements BlendingFunction {
         public static final EaseOutBounce INSTANCE = new EaseOutBounce();
-        public static final Codec<EaseOutBounce> CODEC = Codec.unit(() -> INSTANCE);
+        public static final Codec<EaseOutBounce> CODEC = MapCodec.unitCodec(() -> INSTANCE);
 
         @Override
         public double apply(double factor) {
@@ -117,7 +117,7 @@ public interface BlendingFunction {
 
     record EaseOutQuint() implements BlendingFunction {
         public static final EaseOutQuint INSTANCE = new EaseOutQuint();
-        public static final Codec<EaseOutQuint> CODEC = Codec.unit(() -> INSTANCE);
+        public static final Codec<EaseOutQuint> CODEC = MapCodec.unitCodec(() -> INSTANCE);
 
         @Override
         public double apply(double factor) {

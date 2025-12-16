@@ -1,12 +1,13 @@
 package corgitaco.corgilib.entity.condition;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 
 public class AnyCondition implements Condition {
 
     public static final AnyCondition INSTANCE = new AnyCondition();
 
-    public static final Codec<AnyCondition> CODEC = Codec.unit(() -> INSTANCE);
+    public static final Codec<AnyCondition> CODEC = MapCodec.unitCodec(() -> INSTANCE);
 
 
     public AnyCondition() {

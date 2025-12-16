@@ -17,8 +17,9 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.permissions.Permissions;
 import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
@@ -42,7 +43,7 @@ public class PlaceAllCommand {
 
 
     public static void register(LiteralArgumentBuilder<CommandSourceStack> dispatcher, CommandBuildContext commandBuildContext) {
-        LiteralArgumentBuilder<CommandSourceStack> placeAll = LiteralArgumentBuilder.<CommandSourceStack>literal("place_all").requires(commandSourceStack -> commandSourceStack.hasPermission(3) && commandSourceStack.getServer().isSingleplayer());
+        LiteralArgumentBuilder<CommandSourceStack> placeAll = LiteralArgumentBuilder.<CommandSourceStack>literal("place_all").requires(commandSourceStack -> commandSourceStack.permissions().hasPermission(Permissions.COMMANDS_OWNER) && commandSourceStack.getServer().isSingleplayer());
 
         placeAll.then(LiteralArgumentBuilder.<CommandSourceStack>literal("templates").then(Commands.argument("mod_id", StringArgumentType.word()).suggests((context1, builder) -> SharedSuggestionProvider.suggest(ModPlatform.PLATFORM.getModIDS(), builder)).then(Commands.argument("block", BlockStateArgument.block(commandBuildContext)).then(Commands.argument("depth", IntegerArgumentType.integer()).executes(context -> {
             BlockInput blockInput = BlockStateArgument.getBlock(context, "block");
@@ -67,11 +68,11 @@ public class PlaceAllCommand {
 
     private static void dumpTemplates(Vec3 position, ServerLevel serverLevel, String modId, BlockState state, int floorDepth) {
         StructureTemplateManager structureManager = serverLevel.getStructureManager();
-        List<ResourceLocation> list = structureManager.listTemplates().filter(location -> location.getNamespace().equalsIgnoreCase(modId)).sorted().toList();
+        List<Identifier> list = structureManager.listTemplates().filter(location -> location.getNamespace().equalsIgnoreCase(modId)).sorted().toList();
         int size = list.size();
         int rowsAndCols = (int) (Math.floor(Math.sqrt(size) / 2D));
         generateObject(position, serverLevel, rowsAndCols, 48, state, floorDepth, (idx, pos) -> {
-            ResourceLocation templateLocation = list.get(idx);
+            Identifier templateLocation = list.get(idx);
             StructureTemplate structureTemplate = structureManager.get(templateLocation).get();
             structureTemplate.placeInWorld(serverLevel, pos, pos, new StructurePlaceSettings(), serverLevel.random, 2);
 
@@ -81,7 +82,7 @@ public class PlaceAllCommand {
     }
 
     public static void dumpConfiguredFeatures(Vec3 position, ServerLevel serverLevel, String modId, BlockState state, int floorDepth) {
-        List<Holder.Reference<ConfiguredFeature<?, ?>>> list = serverLevel.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE).listElements().filter(reference -> reference.key().location().getNamespace().equalsIgnoreCase(modId)).sorted(Comparator.comparing(holder -> holder.key().location())).toList();
+        List<Holder.Reference<ConfiguredFeature<?, ?>>> list = serverLevel.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE).listElements().filter(reference -> reference.key().identifier().getNamespace().equalsIgnoreCase(modId)).sorted(Comparator.comparing(holder -> holder.key().identifier())).toList();
         int size = list.size();
         int rowsAndCols = (int) (Math.floor(Math.sqrt(size) / 2D));
         generateObject(position, serverLevel, rowsAndCols, 32, state, floorDepth, (idx, offset) -> {
@@ -92,12 +93,12 @@ public class PlaceAllCommand {
                 textComponent = "Failed: ";
             }
 
-            generateText(serverLevel, Vec3.atCenterOf(offset.above(32)), textComponent + configuredFeatureReference.key().location().toString());
+            generateText(serverLevel, Vec3.atCenterOf(offset.above(32)), textComponent + configuredFeatureReference.key().identifier().toString());
         });
     }
 
     public static void dumpStructures(Vec3 position, ServerLevel serverLevel, String modId, BlockState state, int floorDepth) {
-        List<Holder.Reference<Structure>> list = serverLevel.registryAccess().lookupOrThrow(Registries.STRUCTURE).listElements().filter(reference -> reference.key().location().getNamespace().equalsIgnoreCase(modId)).sorted(Comparator.comparing(holder -> holder.key().location())).toList();
+        List<Holder.Reference<Structure>> list = serverLevel.registryAccess().lookupOrThrow(Registries.STRUCTURE).listElements().filter(reference -> reference.key().identifier().getNamespace().equalsIgnoreCase(modId)).sorted(Comparator.comparing(holder -> holder.key().identifier())).toList();
         int size = list.size();
         int rowsAndCols = (int) (Math.floor(Math.sqrt(size) / 2D));
         generateObject(position, serverLevel, rowsAndCols, 512, state, floorDepth, (idx, offset) -> {

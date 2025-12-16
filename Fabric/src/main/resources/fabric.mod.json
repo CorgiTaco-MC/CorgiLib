@@ -28,9 +28,9 @@
     "corgilib-common.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.16",
+    "fabricloader": ">=0.18",
     "fabric": "*",
-    "minecraft": ">=1.21.4",
+    "minecraft": ">=1.21.11",
     "java": ">=21"
   }
 }

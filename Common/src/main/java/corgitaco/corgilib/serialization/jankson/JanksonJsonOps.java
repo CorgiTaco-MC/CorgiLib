@@ -6,8 +6,8 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.*;
 import corgitaco.corgilib.serialization.codec.CommentsTracker;
 import corgitaco.corgilib.serialization.codec.CommentsTrackerMapLike;
+import org.jspecify.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.BiConsumer;
