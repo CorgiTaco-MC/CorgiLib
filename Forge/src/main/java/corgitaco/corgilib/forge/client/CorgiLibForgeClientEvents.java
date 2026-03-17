@@ -1,13 +1,10 @@
 package corgitaco.corgilib.forge.client;
 
 import corgitaco.corgilib.CorgiLib;
-import corgitaco.corgilib.client.AnnouncementInfo;
 import corgitaco.corgilib.client.AnnouncementInfoClientTicker;
 import corgitaco.corgilib.client.commands.CorgiLibClientCommands;
-import corgitaco.corgilib.client.screen.widget.AnnouncementWidget;
-import corgitaco.corgilib.config.AnnouncementConfig;
+import corgitaco.corgilib.client.screen.widget.EmergencyAnnouncementScreen;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterClientCommandsEvent;
 import net.minecraftforge.client.event.ScreenEvent;
@@ -22,9 +19,7 @@ public class CorgiLibForgeClientEvents {
     @SubscribeEvent
     public static void screenInit(ScreenEvent.Init.Post event) {
         Screen screen = event.getScreen();
-        if (AnnouncementInfo.getInstance() != null && AnnouncementConfig.INSTANCE.get().announcementDelivery() == AnnouncementConfig.AnnouncementDelivery.WIDGET) {
-            screen.addRenderableWidget(new AnnouncementWidget(screen.width, screen.height, 25, 25, Component.literal("")));
-        }
+        EmergencyAnnouncementScreen.createAlertWidget(screen, screen.width, screen.height);
     }
 
     @SubscribeEvent

@@ -32,7 +32,7 @@ import java.util.concurrent.CompletableFuture;
 public record AnnouncementInfo(Component title, Component desc, Component actionButtonText,
                                long timeStamp, String url) {
 
-    private static final String URL = "https://corgitaco.github.io/announcement.json";
+    private static final String URL = "https://corgitaco.github.io/announcement_v2.json";
 
     public static final Codec<AnnouncementInfo> CODEC = RecordCodecBuilder.create(announcementInfoInstance ->
             announcementInfoInstance.group(
@@ -65,9 +65,7 @@ public record AnnouncementInfo(Component title, Component desc, Component action
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         INSTANCE = null;
-
     }
 
 
@@ -122,7 +120,7 @@ public record AnnouncementInfo(Component title, Component desc, Component action
     @Nullable
     private static JsonObject fetchAnnouncementJson(String url) {
         try {
-            HttpClient client = HttpClient.newHttpClient();
+            HttpClient client = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.ALWAYS).build();
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
@@ -135,7 +133,7 @@ public record AnnouncementInfo(Component title, Component desc, Component action
                 JsonElement jsonElement = JsonParser.parseString(body);
                 return jsonElement.getAsJsonObject();
             } else {
-                CorgiLib.LOGGER.error("GET request failed. Response Code: {}", response.statusCode());
+                CorgiLib.LOGGER.info("GET request failed. Response Code: {}", response.statusCode());
             }
         } catch (Exception e) {
             e.printStackTrace();
