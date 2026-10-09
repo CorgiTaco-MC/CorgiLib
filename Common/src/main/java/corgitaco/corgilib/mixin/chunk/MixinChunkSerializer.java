@@ -24,7 +24,7 @@ public class MixinChunkSerializer {
 
     @Inject(method = "write", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/chunk/ChunkAccess;getBlendingData()Lnet/minecraft/world/level/levelgen/blending/BlendingData;"), locals = LocalCapture.CAPTURE_FAILHARD)
     private static void writeScheduledRandomTicks(ServerLevel serverLevel, ChunkAccess chunkAccess, CallbackInfoReturnable<CompoundTag> cir, ChunkPos chunkPos, CompoundTag tag) {
-        List<BlockPos> scheduledRandomTicks = ((RandomTickScheduler) chunkAccess).getScheduledRandomTicks();
+        List<BlockPos> scheduledRandomTicks = ((RandomTickScheduler) chunkAccess).corgilib$getScheduledRandomTicks();
 
         if (!scheduledRandomTicks.isEmpty()) {
             CompoundTag corgiLibTag = new CompoundTag();
@@ -33,7 +33,7 @@ public class MixinChunkSerializer {
             for (BlockPos scheduledRandomTick : scheduledRandomTicks) {
                 listTag.add(NbtUtils.writeBlockPos(scheduledRandomTick));
             }
-            corgiLibTag.put("scheduled_random_ticks", listTag);
+            corgiLibTag.put("scheduled_random_ticks_v2", listTag);
 
             tag.put("corgilib", corgiLibTag);
         }
@@ -44,11 +44,11 @@ public class MixinChunkSerializer {
     private static void readScheduledRandomTicks(ServerLevel level, PoiManager poiManager, RegionStorageInfo regionStorageInfo, ChunkPos pos, CompoundTag tag, CallbackInfoReturnable<ProtoChunk> cir) {
         if (tag.contains("corgilib")) {
             CompoundTag corgiLibTag = tag.getCompound("corgilib");
-            if (corgiLibTag.contains("scheduled_random_ticks", Tag.TAG_LIST)) {
-                for (Tag scheduledTick : corgiLibTag.getList("scheduled_random_ticks", Tag.TAG_COMPOUND)) {
+            if (corgiLibTag.contains("scheduled_random_ticks_v2", Tag.TAG_LIST)) {
+                for (Tag scheduledTick : corgiLibTag.getList("scheduled_random_ticks_v2", Tag.TAG_COMPOUND)) {
 
                     if (scheduledTick instanceof IntArrayTag tag1) {
-                        ((RandomTickScheduler) cir.getReturnValue()).getScheduledRandomTicks().add(new BlockPos(tag1.get(0).getAsInt(), tag1.get(1).getAsInt(), tag1.get(2).getAsInt()));
+                        ((RandomTickScheduler) cir.getReturnValue()).corgilib$getScheduledRandomTicks().add(new BlockPos(tag1.get(0).getAsInt(), tag1.get(1).getAsInt(), tag1.get(2).getAsInt()));
                     }
                 }
             }

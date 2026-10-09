@@ -29,7 +29,7 @@ public abstract class MixinServerLevel extends Level {
 
     @Inject(method = "tickChunk", at = @At("HEAD"))
     private void tickScheduledRandomTicks(LevelChunk chunk, int randomTickSpeed, CallbackInfo ci) {
-        var original = ((RandomTickScheduler) chunk).getScheduledRandomTicks();
+        var original = ((RandomTickScheduler) chunk).corgilib$getScheduledRandomTicks();
         if (original.isEmpty()) return;
 
         var tmp = List.copyOf(original);
