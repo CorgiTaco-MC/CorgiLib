@@ -1,3 +1,6 @@
+# 5.0.0.10
+- fix a memory leak caused by improper scheduled tick storage and loading
+
 # 5.0.0.9
 * Change internal impls.
 
