@@ -1,3 +1,6 @@
+# 7.0.0.2
+- fix a memory leak caused by improper scheduled tick storage and loading
+
 # 7.0.0.1
 - Update included toml to 3.8.3
 
