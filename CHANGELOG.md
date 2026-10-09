@@ -1,3 +1,6 @@
+# 6.0.0.5
+- fix a memory leak caused by improper scheduled tick storage and loading
+
 # 6.0.0.4
 - Update included toml to 3.8.3
 
