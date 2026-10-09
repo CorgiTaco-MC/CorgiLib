@@ -1,3 +1,6 @@
+# 9.0.0.1
+- fix a memory leak caused by improper scheduled tick storage and loading
+
 # 9.0.0.0
 - Update to 1.21.11
 
