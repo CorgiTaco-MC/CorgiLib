@@ -1,3 +1,6 @@
+# 4.0.3.6
+- fix a memory leak caused by improper scheduled tick storage and loading
+
 # 4.0.3.5
 - Move Night Config Shutdown to Fabric Server Lifecycle Event
 - Change Maven Group ID to dev.corgitaco
