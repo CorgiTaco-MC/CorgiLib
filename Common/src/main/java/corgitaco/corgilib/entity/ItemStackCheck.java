@@ -1,6 +1,7 @@
 package corgitaco.corgilib.entity;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import corgitaco.corgilib.comparator.DoubleComparator;
 import corgitaco.corgilib.serialization.codec.CodecUtil;
@@ -12,14 +13,24 @@ import net.minecraft.world.item.enchantment.ItemEnchantments;
 
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 public class ItemStackCheck {
 
-    public static final Codec<ItemStackCheck> CODEC = RecordCodecBuilder.create(builder -> builder.group(CodecUtil.ITEM_CODEC.fieldOf("item").forGetter(itemStackCheck -> itemStackCheck.item), DoubleComparator.CODEC.optionalFieldOf("durability_is").forGetter(itemStackCheck -> itemStackCheck.durabilityComparator),
-                    DoubleComparator.CODEC.optionalFieldOf("stack_size_is").forGetter(itemStackCheck -> itemStackCheck.stackSizeComparator),
-                    Codec.unboundedMap(Enchantment.CODEC, DoubleComparator.CODEC).optionalFieldOf("enchantment_check").forGetter(itemStackCheck -> itemStackCheck.enchantmentLevelComparator))
-            .apply(builder, ItemStackCheck::new));
+    public static final Codec<ItemStackCheck> CODEC = RecordCodecBuilder.<Settings>create(builder -> builder.group(
+                    CodecUtil.ITEM_CODEC.fieldOf("item").forGetter(Settings::item),
+                    DoubleComparator.CODEC.optionalFieldOf("durability_is").forGetter(Settings::durability),
+                    DoubleComparator.CODEC.optionalFieldOf("stack_size_is").forGetter(Settings::stackSize),
+                    Codec.unboundedMap(Enchantment.CODEC, DoubleComparator.CODEC).optionalFieldOf("enchantment_check").forGetter(Settings::enchantments))
+            .apply(builder, Settings::new)).comapFlatMap(settings -> {
+                if (settings.durability().isEmpty() && settings.stackSize().isEmpty() && settings.enchantments().isEmpty()) {
+                    return DataResult.error(() -> "We need at least one check in an Item Stack Check!");
+                }
+                return DataResult.success(new ItemStackCheck(settings.item(), settings.durability(), settings.stackSize(), settings.enchantments()));
+            }, check -> new Settings(check.item, check.durabilityComparator, check.stackSizeComparator, check.enchantmentLevelComparator));
+
+    private record Settings(Item item, Optional<DoubleComparator> durability, Optional<DoubleComparator> stackSize,
+                            Optional<Map<Holder<Enchantment>, DoubleComparator>> enchantments) {
+    }
 
     private final Item item;
     private final Optional<DoubleComparator> durabilityComparator;
@@ -33,7 +44,7 @@ public class ItemStackCheck {
         }
         this.durabilityComparator = durabilityComparator;
         this.stackSizeComparator = stackSizeComparator;
-        this.enchantmentLevelComparator = enchantmentLevelComparator;
+        this.enchantmentLevelComparator = enchantmentLevelComparator.map(Map::copyOf);
     }
 
     public boolean test(ItemStack itemStack) {
@@ -46,17 +57,10 @@ public class ItemStackCheck {
             }
 
             if (enchantmentLevelComparator.isPresent()) {
-                Map<Holder<Enchantment>, DoubleComparator> enchantmentComparator = enchantmentLevelComparator.get();
-
-
                 ItemEnchantments enchantments = itemStack.getEnchantments();
-                Set<Holder<Enchantment>> holders = enchantments.keySet();
-                for (Holder<Enchantment> enchantmentHolder : holders) {
-                    if (enchantmentComparator.containsKey(enchantmentHolder)) {
-                        final DoubleComparator doubleComparator = enchantmentComparator.get(enchantmentHolder);
-                        if (!doubleComparator.check(enchantments.getLevel(enchantmentHolder))) {
-                            return false;
-                        }
+                for (Map.Entry<Holder<Enchantment>, DoubleComparator> check : enchantmentLevelComparator.get().entrySet()) {
+                    if (!check.getValue().check(enchantments.getLevel(check.getKey()))) {
+                        return false;
                     }
                 }
             }

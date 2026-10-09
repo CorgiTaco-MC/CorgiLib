@@ -13,8 +13,9 @@ import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
-import net.neoforged.neoforge.registries.RegistryBuilder;
 import net.neoforged.neoforgespi.language.IModInfo;
+import net.neoforged.bus.api.IEventBus;
+import org.jspecify.annotations.Nullable;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -54,24 +55,55 @@ public class NeoForgePlatform implements ModPlatform {
         return FMLPaths.CONFIGDIR.get();
     }
 
-    public static final Map<ResourceKey<?>, DeferredRegister> CACHED = new Reference2ObjectOpenHashMap<>();
+    public static final Map<ResourceKey<?>, DeferredRegister<?>> CACHED = new Reference2ObjectOpenHashMap<>();
+    private static @Nullable IEventBus registrationBus;
+
+    public static synchronized void bindRegistries(IEventBus bus) {
+        if (registrationBus != null) {
+            if (registrationBus != bus) {
+                throw new IllegalStateException("CorgiLib registries are already bound to another event bus");
+            }
+            return;
+        }
+        registrationBus = bus;
+        CACHED.values().forEach(register -> register.register(bus));
+    }
+
+    @SuppressWarnings("unchecked")
+    private static synchronized <T> DeferredRegister<T> deferredRegister(ResourceKey<? extends Registry<T>> key) {
+        return (DeferredRegister<T>) CACHED.computeIfAbsent(key, ignored -> {
+            DeferredRegister<T> register = DeferredRegister.create(key, CorgiLib.MOD_ID);
+            if (registrationBus != null) {
+                register.register(registrationBus);
+            }
+            return register;
+        });
+    }
 
     @Override
     public <T> Supplier<T> register(Registry<T> registry, String location, Supplier<T> value) {
-        return CACHED.computeIfAbsent(registry.key(), key -> DeferredRegister.create(registry.key(), CorgiLib.MOD_ID)).register(location, value);
+        return deferredRegister(registry.key()).register(location, value);
+    }
+
+    @Override
+    public <T> Supplier<T> register(ResourceKey<Registry<T>> registryKey, String location, Supplier<T> value) {
+        return deferredRegister(registryKey).register(location, value);
     }
 
     @Override
     public <T> Supplier<Registry<T>> createSimpleBuiltin(ResourceKey<Registry<T>> registryKey) {
-        Registry<T> ts = new RegistryBuilder<>(registryKey).sync(true).create();
-        NEW_REGISTRIES.add(newRegistryEvent -> newRegistryEvent.register(ts));
-        return () -> ts;
+        DeferredRegister<T> register = deferredRegister(registryKey);
+        register.makeRegistry(builder -> builder.sync(true));
+        return register.getRegistry();
     }
 
     public static final List<Consumer<DataPackRegistryEvent.NewRegistry>> DATAPACK_REGISTRIES = new ArrayList<>();
 
     @Override
     public <T> void registerDatapackRegistry(ResourceKey<Registry<T>> key, Supplier<Codec<T>> codec) {
-        DATAPACK_REGISTRIES.add(newRegistry -> newRegistry.dataPackRegistry(key, codec.get()));
+        DATAPACK_REGISTRIES.add(newRegistry -> {
+            Codec<T> resolvedCodec = codec.get();
+            newRegistry.dataPackRegistry(key, resolvedCodec, resolvedCodec);
+        });
     }
 }

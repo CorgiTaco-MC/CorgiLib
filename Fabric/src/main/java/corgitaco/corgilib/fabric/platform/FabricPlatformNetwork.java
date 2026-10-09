@@ -6,7 +6,7 @@ import corgitaco.corgilib.fabric.network.FabricNetworkHandler;
 import corgitaco.corgilib.platform.PlatformNetwork;
 import net.minecraft.server.level.ServerPlayer;
 
-@AutoService(FabricPlatformNetwork.class)
+@AutoService(PlatformNetwork.class)
 public class FabricPlatformNetwork implements PlatformNetwork {
     @Override
     public <P extends Packet> void sendToClient(ServerPlayer player, P packet) {

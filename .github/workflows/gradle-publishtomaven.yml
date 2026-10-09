@@ -9,6 +9,7 @@ on:
       - 1.21.8
       - 1.21.10
       - 1.21.11
+      - 26.1.x
 
 jobs:
   gradle:
@@ -16,11 +17,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
-      - name: Set up JDK 21
+      - name: Set up JDK 25
         uses: actions/setup-java@v5
         with:
-          distribution: adopt
-          java-version: 21
+          distribution: temurin
+          java-version: 25
           cache: gradle
 
       - name: Configure Gradle secrets

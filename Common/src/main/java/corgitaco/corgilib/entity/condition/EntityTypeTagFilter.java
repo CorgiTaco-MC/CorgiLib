@@ -21,6 +21,6 @@ public record EntityTypeTagFilter(TagKey<EntityType<?>> entityTypeTag) implement
 
     @Override
     public boolean passes(ConditionContext conditionContext) {
-        return conditionContext.entity().getType().is(this.entityTypeTag);
+        return conditionContext.entity().getType().builtInRegistryHolder().is(this.entityTypeTag);
     }
 }

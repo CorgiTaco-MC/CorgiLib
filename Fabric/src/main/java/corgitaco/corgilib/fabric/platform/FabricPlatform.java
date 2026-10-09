@@ -7,6 +7,7 @@ import corgitaco.corgilib.CorgiLib;
 import corgitaco.corgilib.platform.ModPlatform;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
+import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
@@ -56,9 +57,8 @@ public class FabricPlatform implements ModPlatform {
 
     @Override
     public <T> Supplier<Registry<T>> createSimpleBuiltin(ResourceKey<Registry<T>> registryKey) {
-        MappedRegistry<T> registry = FabricRegistryBuilder.createSimple(registryKey).buildAndRegister();
-        Supplier<Registry<T>> supplier = () -> registry;
-        return supplier;
+        MappedRegistry<T> registry = FabricRegistryBuilder.create(registryKey).attribute(RegistryAttribute.SYNCED).buildAndRegister();
+        return () -> registry;
     }
 
     @Override

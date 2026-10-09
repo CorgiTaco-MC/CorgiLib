@@ -3,6 +3,7 @@ package corgitaco.corgilib.platform;
 import com.mojang.serialization.Codec;
 import corgitaco.corgilib.CorgiLib;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 
 import java.nio.file.Path;
@@ -54,6 +55,15 @@ public interface ModPlatform {
     }
 
     <T> Supplier<T> register(Registry<T> registry, String name, Supplier<T> value);
+
+    @SuppressWarnings("unchecked")
+    default <T> Supplier<T> register(ResourceKey<Registry<T>> key, String name, Supplier<T> value) {
+        Registry<T> registry = (Registry<T>) BuiltInRegistries.REGISTRY.getValue(key.identifier());
+        if (registry == null) {
+            throw new IllegalStateException("Registry has not been created: " + key.identifier());
+        }
+        return register(registry, name, value);
+    }
 
     <T> Supplier<Registry<T>> createSimpleBuiltin(ResourceKey<Registry<T>> registryKey);
 

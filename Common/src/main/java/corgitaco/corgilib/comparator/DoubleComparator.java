@@ -4,7 +4,13 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 
 public class DoubleComparator {
-    public static final Codec<DoubleComparator> CODEC = Codec.STRING.comapFlatMap(s -> DataResult.success(new DoubleComparator(s)), doubleComparator -> doubleComparator.original);
+    public static final Codec<DoubleComparator> CODEC = Codec.STRING.comapFlatMap(s -> {
+        try {
+            return DataResult.success(new DoubleComparator(s));
+        } catch (IllegalArgumentException exception) {
+            return DataResult.error(exception::getMessage);
+        }
+    }, doubleComparator -> doubleComparator.original);
 
     private final double checkAgainst;
     private final DoubleCheckType check;
@@ -34,6 +40,6 @@ public class DoubleComparator {
     }
 
     public boolean check(double number) {
-        return check.test(checkAgainst, number);
+        return check.test(number, checkAgainst);
     }
 }

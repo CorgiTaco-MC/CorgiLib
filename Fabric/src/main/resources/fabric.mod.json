@@ -24,14 +24,15 @@
       "corgitaco.corgilib.fabric.client.CorgiLibFabricClient"
     ]
   },
+  "accessWidener": "corgilib.accesswidener",
   "mixins": [
     "corgilib-common.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.18",
-    "fabric": "*",
-    "minecraft": ">=1.21.11",
-    "java": ">=21"
+    "fabricloader": ">=0.19.5",
+    "fabric-api": ">=0.145.1",
+    "minecraft": "26.1.x",
+    "java": ">=25"
   }
 }
   

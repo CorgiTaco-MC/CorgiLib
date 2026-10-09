@@ -17,7 +17,7 @@ import net.neoforged.neoforge.registries.NewRegistryEvent;
 public class CorgiLibNeoForge {
     public CorgiLibNeoForge(IEventBus modEventBus) {
         CorgiLib.init();
-        NeoForgePlatform.CACHED.values().forEach(deferredRegister -> deferredRegister.register(modEventBus));
+        NeoForgePlatform.bindRegistries(modEventBus);
         modEventBus.addListener(DataPackRegistryEvent.NewRegistry.class, newRegistry -> NeoForgePlatform.DATAPACK_REGISTRIES.forEach(newRegistryConsumer -> newRegistryConsumer.accept(newRegistry)));
         modEventBus.addListener(NewRegistryEvent.class, newRegistry -> NeoForgePlatform.NEW_REGISTRIES.forEach(newRegistryConsumer -> newRegistryConsumer.accept(newRegistry)));
         NeoForge.EVENT_BUS.addListener((RegisterCommandsEvent event) -> CorgiLibCommands.registerCommands(event.getDispatcher(), event.getBuildContext()));

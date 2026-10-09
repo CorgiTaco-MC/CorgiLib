@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
 
 public class PrecipitationAtCondition implements Condition {
 
@@ -21,13 +22,7 @@ public class PrecipitationAtCondition implements Condition {
     public boolean passes(ConditionContext conditionContext) {
         BlockPos offset = conditionContext.entity().blockPosition().offset(this.offset);
         Level world = conditionContext.world();
-        if (world.isRainingAt(offset)) {
-            if (this.snow) {
-                return world.getBiome(offset).value().shouldSnow(world, offset);
-            }
-            return true;
-        }
-        return false;
+        return world.precipitationAt(offset) == (snow ? Biome.Precipitation.SNOW : Biome.Precipitation.RAIN);
     }
 
     @Override

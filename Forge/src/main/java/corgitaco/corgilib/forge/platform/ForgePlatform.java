@@ -5,7 +5,6 @@ import com.mojang.serialization.Codec;
 import corgitaco.corgilib.CorgiLib;
 import corgitaco.corgilib.platform.ModPlatform;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
-import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
@@ -15,6 +14,9 @@ import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.forgespi.language.IModInfo;
 import net.minecraftforge.registries.DataPackRegistryEvent;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryBuilder;
+import net.minecraftforge.eventbus.api.bus.BusGroup;
+import org.jspecify.annotations.Nullable;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -34,7 +36,7 @@ public class ForgePlatform implements ModPlatform {
 
     @Override
     public boolean isModLoaded(String modId) {
-        return ModList.get().isLoaded(modId);
+        return ModList.isLoaded(modId);
     }
 
     @Override
@@ -44,7 +46,7 @@ public class ForgePlatform implements ModPlatform {
 
     @Override
     public Collection<String> getModIDS() {
-        return ModList.get().getMods().stream().map(IModInfo::getModId).toList();
+        return ModList.getMods().stream().map(IModInfo::getModId).toList();
     }
 
     @Override
@@ -52,31 +54,63 @@ public class ForgePlatform implements ModPlatform {
         return FMLPaths.CONFIGDIR.get();
     }
 
-    public static final Map<ResourceKey<?>, DeferredRegister> CACHED = new Reference2ObjectOpenHashMap<>();
+    public static final Map<ResourceKey<?>, DeferredRegister<?>> CACHED = new Reference2ObjectOpenHashMap<>();
+    private static @Nullable BusGroup registrationBus;
+
+    public static synchronized void bindRegistries(BusGroup bus) {
+        if (registrationBus != null) {
+            if (registrationBus != bus) {
+                throw new IllegalStateException("CorgiLib registries are already bound to another event bus");
+            }
+            return;
+        }
+        registrationBus = bus;
+        CACHED.values().forEach(register -> register.register(bus));
+    }
+
+    @SuppressWarnings("unchecked")
+    private static synchronized <T> DeferredRegister<T> deferredRegister(ResourceKey<? extends Registry<T>> key) {
+        return (DeferredRegister<T>) CACHED.computeIfAbsent(key, ignored -> {
+            DeferredRegister<T> register = DeferredRegister.create(key, CorgiLib.MOD_ID);
+            if (registrationBus != null) {
+                register.register(registrationBus);
+            }
+            return register;
+        });
+    }
 
     @Override
     public <T> Supplier<T> register(Registry<T> registry, String location, Supplier<T> value) {
-        return CACHED.computeIfAbsent(registry.key(), key -> DeferredRegister.create(registry.key(), CorgiLib.MOD_ID)).register(location, value);
+        return deferredRegister(registry.key()).register(location, value);
+    }
+
+    @Override
+    public <T> Supplier<T> register(ResourceKey<Registry<T>> registryKey, String location, Supplier<T> value) {
+        return deferredRegister(registryKey).register(location, value);
     }
 
     @Override
     public <T> Supplier<Registry<T>> createSimpleBuiltin(ResourceKey<Registry<T>> registryKey) {
-        if (BuiltInRegistries.REGISTRY instanceof MappedRegistry<? extends Registry<?>> mappedRegistry) { // We have to unlock the registry first
-            mappedRegistry.unfreeze();
-        }
+        deferredRegister(registryKey).makeRegistry(() -> RegistryBuilder.<T>of().hasTags());
+        return () -> builtinRegistry(registryKey);
+    }
 
-        Registry<T> registry = BuiltInRegistries.registerSimple(registryKey, builder -> new Object());
-
-        if (BuiltInRegistries.REGISTRY instanceof MappedRegistry<? extends Registry<?>> mappedRegistry) { // Relock the registry
-            mappedRegistry.freeze();
+    @SuppressWarnings("unchecked")
+    private static <T> Registry<T> builtinRegistry(ResourceKey<Registry<T>> registryKey) {
+        Registry<?> registry = BuiltInRegistries.REGISTRY.getValue(registryKey.identifier());
+        if (registry == null) {
+            throw new IllegalStateException("Registry " + registryKey.identifier() + " has not been registered yet");
         }
-        return () -> registry;
+        return (Registry<T>) registry;
     }
 
     public static final List<Consumer<DataPackRegistryEvent.NewRegistry>> DATAPACK_REGISTRIES = new ArrayList<>();
 
     @Override
     public <T> void registerDatapackRegistry(ResourceKey<Registry<T>> key, Supplier<Codec<T>> codec) {
-        DATAPACK_REGISTRIES.add(newRegistry -> newRegistry.dataPackRegistry(key, codec.get()));
+        DATAPACK_REGISTRIES.add(newRegistry -> {
+            Codec<T> resolvedCodec = codec.get();
+            newRegistry.dataPackRegistry(key, resolvedCodec, resolvedCodec);
+        });
     }
 }

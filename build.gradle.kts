@@ -1,16 +1,13 @@
-import net.fabricmc.loom.api.LoomGradleExtensionAPI
-
 plugins {
-    id("architectury-plugin") version "3.4-SNAPSHOT"
-    id("dev.architectury.loom") version "1.13-SNAPSHOT" apply false
-    id("com.gradleup.shadow") version "9.3.0" apply false
+    id("dev.architectury.loom-no-remap") version "1.17.493" apply false
+    id("com.gradleup.shadow") version "9.6.1" apply false
     java
     idea
     `maven-publish`
 }
 
 val minecraftVersion = project.properties["minecraft_version"] as String
-architectury.minecraft = minecraftVersion
+val minecraftCompileVersion = project.properties["minecraft_compile_version"] as String
 
 allprojects {
     version = project.properties["version"] as String
@@ -18,19 +15,16 @@ allprojects {
 }
 
 subprojects {
-    apply(plugin = "dev.architectury.loom")
-    apply(plugin = "architectury-plugin")
+    extensions.extraProperties["loom.platform"] = when (name) { "Forge" -> "forge"; "NeoForge" -> "neoforge"; else -> "fabric" }
+    apply(plugin = "dev.architectury.loom-no-remap")
     apply(plugin = "maven-publish")
 
     base.archivesName.set(project.properties["archives_base_name"] as String + "-${project.name}-$minecraftVersion")
 
-    val loom = project.extensions.getByName<LoomGradleExtensionAPI>("loom")
-    loom.silentMojangMappingsLicense()
-
     repositories {
         mavenCentral()
         mavenLocal()
-        maven("https://maven.parchmentmc.org")
+
         maven("https://maven.fabricmc.net/")
         maven("https://maven.minecraftforge.net/")
         maven("https://maven.neoforged.net/releases/")
@@ -39,26 +33,22 @@ subprojects {
 
     @Suppress("UnstableApiUsage")
     dependencies {
-        "minecraft"("com.mojang:minecraft:$minecraftVersion")
-        "mappings"(loom.layered{
-            officialMojangMappings()
-            parchment("org.parchmentmc.data:parchment-$minecraftVersion:${project.properties["parchment"]}@zip")
-        })
-
+        "minecraft"("com.mojang:minecraft:$minecraftCompileVersion")
         compileOnly("org.jetbrains:annotations:26.0.2-1")
         compileOnly("com.google.auto.service:auto-service:1.1.1")
         annotationProcessor("com.google.auto.service:auto-service:1.1.1")
     }
 
     java {
+        toolchain.languageVersion.set(JavaLanguageVersion.of(25))
         withSourcesJar()
 
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = JavaVersion.VERSION_25
+        targetCompatibility = JavaVersion.VERSION_25
     }
 
     tasks.withType<JavaCompile>().configureEach {
-        options.release.set(21)
+        options.release.set(25)
     }
 
     publishing {

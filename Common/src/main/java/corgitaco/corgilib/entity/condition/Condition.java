@@ -46,7 +46,7 @@ public interface Condition {
         register("any", AnyCondition.CODEC);
     }
 
-    private static void register(String id, Codec<? extends Condition> codec) {
-        ModPlatform.PLATFORM.register(CorgiLibRegistry.CONDITION.get(), id, () -> codec);
+    static void register(String id, Codec<? extends Condition> codec) {
+        ModPlatform.PLATFORM.register(CorgiLibRegistry.CONDITION_KEY, id, () -> codec);
     }
 }

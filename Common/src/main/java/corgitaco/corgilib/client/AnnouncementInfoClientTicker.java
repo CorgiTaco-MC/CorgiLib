@@ -33,9 +33,9 @@ public class AnnouncementInfoClientTicker {
             if (announcementTimer > 0) {
                 announcementTimer--;
                 if (announcementTimer == 0) {
-                    player.displayClientMessage(announcementInfo.title(), false);
-                    player.displayClientMessage(Component.empty(), false);
-                    player.displayClientMessage(announcementInfo.desc(), false);
+                    player.sendSystemMessage(announcementInfo.title());
+                    player.sendSystemMessage(Component.empty());
+                    player.sendSystemMessage(announcementInfo.desc());
                     Component component = announcementInfo.actionButtonText();
                     MutableComponent open = ComponentUtils.wrapInSquareBrackets(component.copy().withStyle(style -> {
                         try {
@@ -44,9 +44,9 @@ public class AnnouncementInfoClientTicker {
                             throw new RuntimeException(e);
                         }
                     }));
-                    player.displayClientMessage(Component.empty(), false);
+                    player.sendSystemMessage(Component.empty());
                     MutableComponent dismiss = Component.literal("Dismiss").withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY).withStyle(style -> style.withClickEvent(new ClickEvent.RunCommand("/corgilib_client announcement dismiss")));
-                    player.displayClientMessage(Component.literal("").append(open).append(" | ").append(dismiss), false);
+                    player.sendSystemMessage(Component.literal("").append(open).append(" | ").append(dismiss));
                 }
             }
         }

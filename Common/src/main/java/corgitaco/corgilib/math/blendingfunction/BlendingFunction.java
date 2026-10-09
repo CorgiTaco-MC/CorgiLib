@@ -28,7 +28,7 @@ public interface BlendingFunction {
     }
 
     private static void register(String name, Codec<? extends BlendingFunction> function) {
-        ModPlatform.PLATFORM.register(CorgiLibRegistry.BLENDING_FUNCTION.get(), name, () -> function);
+        ModPlatform.PLATFORM.register(CorgiLibRegistry.BLENDING_FUNCTION_RESOURCE_KEY, name, () -> function);
     }
 
     record EaseInOutCirc() implements BlendingFunction {

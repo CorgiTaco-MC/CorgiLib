@@ -7,8 +7,6 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Util;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.network.Channel;
 import net.minecraftforge.network.ChannelBuilder;
 import net.minecraftforge.network.payload.PayloadConnection;
@@ -23,54 +21,28 @@ public class ForgeNetworkHandler {
 
         PayloadProtocol<RegistryFriendlyByteBuf, CustomPacketPayload> play = connection.play();
 
-        for (Packet.Handler<?> packet : Packet.PACKETS) {
-
-            if (packet.direction() == Packet.PacketDirection.SERVER_TO_CLIENT) {
-                play = play.clientbound();
-                registerS2C(packet, (PayloadFlow) play);
-            }
-
-            if (packet.direction() == Packet.PacketDirection.CLIENT_TO_SERVER) {
-                play = play.serverbound();
-                registerC2S(packet, (PayloadFlow) play);
-            }
-
-            if (packet.direction() == Packet.PacketDirection.BI_DIRECTIONAL) {
-                play = play.bidirectional();
-                registerBiDirectional(packet, (PayloadFlow) play);
-            }
-        }
-
-        return ((PayloadFlow) play).build();
+        Packet.PACKETS.forEach(packet -> register(packet, play));
+        return play.bidirectional().build();
     });
 
     public static void init() {}
 
 
-    private static <T extends Packet> void registerS2C(Packet.Handler<T> handler, PayloadFlow<RegistryFriendlyByteBuf, T> flow) {
+    private static <T extends Packet> void register(Packet.Handler<T> handler, PayloadProtocol<RegistryFriendlyByteBuf, CustomPacketPayload> protocol) {
+        PayloadFlow<RegistryFriendlyByteBuf, CustomPacketPayload> flow = switch (handler.direction()) {
+            case SERVER_TO_CLIENT -> protocol.clientbound();
+            case CLIENT_TO_SERVER -> protocol.serverbound();
+            case BI_DIRECTIONAL -> protocol.bidirectional();
+        };
         flow.addMain(handler.type(), handler.serializer(), (t, context) -> {
-            context.enqueueWork(() -> handler.handle().handle(t, context.getSender().level(), context.getSender()));
-            context.setPacketHandled(true);
-        });
-    }
-
-    private static <T extends Packet> void registerC2S(Packet.Handler<T> handler, PayloadFlow<RegistryFriendlyByteBuf, T> flow) {
-        flow.addMain(handler.type(), handler.serializer(), (t, context) -> {
-            context.enqueueWork(() -> Client.clientHandle(t, handler.handle()));
-            context.setPacketHandled(true);
-        });
-    }
-
-    private static <T extends Packet> void registerBiDirectional(Packet.Handler<T> handler, PayloadFlow<RegistryFriendlyByteBuf, T> flow) {
-        flow.addMain(handler.type(), handler.serializer(), (t, context) -> {
-            if (FMLLoader.getDist() == Dist.CLIENT) {
-                if (context.isClientSide()) {
-                    Client.clientHandle(t, handler.handle());
-                }
+            if (context.isClientSide()) {
+                Client.clientHandle(t, handler.handle());
             } else {
-                handler.handle().handle(t, context.getSender().level(), context.getSender());
+                ServerPlayer sender = context.getSender();
+                if (sender != null) {
+                    handler.handle().handle(t, sender.level(), sender);
+                }
             }
-            context.setPacketHandled(true);
         });
     }
 
@@ -85,10 +57,18 @@ public class ForgeNetworkHandler {
     }
 
     public static <T extends Packet> void sendToServer(T packet) {
-        SIMPLE_CHANNEL.send(packet, Minecraft.getInstance().getConnection().getConnection());
+        Client.sendToServer(packet);
     }
 
     private static class Client {
+        private static <T extends Packet> void sendToServer(T packet) {
+            var connection = Minecraft.getInstance().getConnection();
+            if (connection == null) {
+                throw new IllegalStateException("Cannot send a CorgiLib packet without a server connection");
+            }
+            SIMPLE_CHANNEL.send(packet, connection.getConnection());
+        }
+
         private static <T extends Packet> void clientHandle(T packet, Packet.Handle<T> handle) {
             handle.handle(packet, Minecraft.getInstance().level, Minecraft.getInstance().player);
         }

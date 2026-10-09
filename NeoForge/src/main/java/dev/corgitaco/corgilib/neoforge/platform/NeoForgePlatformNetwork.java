@@ -16,6 +16,12 @@ public class NeoForgePlatformNetwork implements PlatformNetwork {
 
     @Override
     public <P extends Packet> void sendToServer(P packet) {
-        ClientPacketDistributor.sendToServer(packet);
+        Client.sendToServer(packet);
+    }
+
+    private static final class Client {
+        private static <P extends Packet> void sendToServer(P packet) {
+            ClientPacketDistributor.sendToServer(packet);
+        }
     }
 }

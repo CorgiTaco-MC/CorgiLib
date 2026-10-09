@@ -10,8 +10,8 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 public record EntityIsInsideStructureTrackerUpdatePacket(
         int id,
@@ -28,7 +28,7 @@ public record EntityIsInsideStructureTrackerUpdatePacket(
 
     @Override
     public void handle(@Nullable Level level, @Nullable Player player) {
-        if (level != null) {
+        if (level != null && level.isClientSide()) {
             final Entity entity = level.getEntity(this.id);
             if (entity != null) {
                 IsInsideStructureTracker.IsInside tracker = ((IsInsideStructureTracker.Access) entity).getIsInsideStructureTracker().getTracker();

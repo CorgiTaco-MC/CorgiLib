@@ -17,22 +17,23 @@ import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.util.Util;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 public record AnnouncementInfo(Component title, Component desc, Component actionButtonText,
                                long timeStamp, String url) {
 
-    private static final String URL = "https://corgitaco.github.io/announcement.json";
+    private static final String URL = "https://corgitaco.github.io/announcement_v2.json";
 
     public static final Codec<AnnouncementInfo> CODEC = RecordCodecBuilder.create(announcementInfoInstance ->
             announcementInfoInstance.group(
@@ -43,14 +44,15 @@ public record AnnouncementInfo(Component title, Component desc, Component action
                     Codec.STRING.fieldOf("action_link").forGetter(AnnouncementInfo::url)
             ).apply(announcementInfoInstance, AnnouncementInfo::new)
     );
-    private static CompletableFuture<AnnouncementInfo> INSTANCE = CompletableFuture.supplyAsync(AnnouncementInfo::getTimeCheckedAnnouncement, Util.backgroundExecutor());
+    private static volatile CompletableFuture<AnnouncementInfo> INSTANCE = CompletableFuture.supplyAsync(AnnouncementInfo::getTimeCheckedAnnouncement, Util.nonCriticalIoPool())
+            .exceptionally(exception -> {
+                CorgiLib.LOGGER.warn("Could not prepare the announcement", exception);
+                return null;
+            });
 
 
     public static void saveStoredAnnouncementInfo() {
-        if (INSTANCE == null) {
-            return;
-        }
-        AnnouncementInfo announcementInfo = INSTANCE.getNow(null);
+        AnnouncementInfo announcementInfo = getInstance();
 
         if (announcementInfo == null) {
             return;
@@ -63,7 +65,8 @@ public record AnnouncementInfo(Component title, Component desc, Component action
             String json = new GsonBuilder().create().toJson(storedAnnouncementInfo);
             Files.writeString(path, json);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            CorgiLib.LOGGER.warn("Could not store the dismissed announcement", e);
+            return;
         }
 
         INSTANCE = null;
@@ -80,20 +83,20 @@ public record AnnouncementInfo(Component title, Component desc, Component action
         }
 
         Path path = ModPlatform.PLATFORM.modConfigDir().resolve("announcement_store.json");
-        if (path.toFile().exists()) {
-            try {
-                JsonElement jsonElement = JsonParser.parseReader(new FileReader(path.toFile()));
+        if (Files.exists(path)) {
+            try (Reader reader = Files.newBufferedReader(path)) {
+                JsonElement jsonElement = JsonParser.parseReader(reader);
 
                 StoredAnnouncementInfo storedAnnouncementInfo = new GsonBuilder().create().fromJson(jsonElement, StoredAnnouncementInfo.class);
 
-                if (storedAnnouncementInfo.unixTime < announcementInfo.timeStamp() || !storedAnnouncementInfo.player.equals(Minecraft.getInstance().getUser().getProfileId())) {
+                if (storedAnnouncementInfo == null || storedAnnouncementInfo.unixTime < announcementInfo.timeStamp() || !Minecraft.getInstance().getUser().getProfileId().equals(storedAnnouncementInfo.player)) {
                     return announcementInfo;
                 } else {
                     return null;
                 }
 
-            } catch (FileNotFoundException e) {
-                return null;
+            } catch (IOException | RuntimeException e) {
+                CorgiLib.LOGGER.warn("Could not read the stored announcement; displaying the current announcement", e);
             }
         }
 
@@ -108,7 +111,16 @@ public record AnnouncementInfo(Component title, Component desc, Component action
         if (jsonObject != null) {
             DataResult<Pair<AnnouncementInfo, JsonElement>> decoded = CODEC.decode(JsonOps.INSTANCE, jsonObject);
             if (decoded.result().isPresent()) {
-                return decoded.result().orElseThrow().getFirst();
+                AnnouncementInfo info = decoded.result().orElseThrow().getFirst();
+                try {
+                    URI actionLink = URI.create(info.url());
+                    if (actionLink.getHost() != null && ("https".equalsIgnoreCase(actionLink.getScheme()) || "http".equalsIgnoreCase(actionLink.getScheme()))) {
+                        return info;
+                    }
+                } catch (IllegalArgumentException e) {
+                    CorgiLib.LOGGER.warn("The announcement action link is invalid", e);
+                }
+                CorgiLib.LOGGER.warn("The announcement action link must be an HTTP or HTTPS URL");
             } else {
                 if (decoded.error().isPresent()) {
                     CorgiLib.LOGGER.error("Could not parse announcement json due to: %s".formatted(decoded.error().orElseThrow()));
@@ -121,11 +133,11 @@ public record AnnouncementInfo(Component title, Component desc, Component action
 
     @Nullable
     private static JsonObject fetchAnnouncementJson(String url) {
-        try {
-            HttpClient client = HttpClient.newHttpClient();
+        try (HttpClient client = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.ALWAYS).connectTimeout(Duration.ofSeconds(10)).build()) {
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
+                    .timeout(Duration.ofSeconds(15))
                     .GET()
                     .build();
 
@@ -133,19 +145,40 @@ public record AnnouncementInfo(Component title, Component desc, Component action
             if (response.statusCode() == 200) {
                 String body = response.body();
                 JsonElement jsonElement = JsonParser.parseString(body);
-                return jsonElement.getAsJsonObject();
+                if (jsonElement.isJsonObject()) {
+                    return jsonElement.getAsJsonObject();
+                }
+                CorgiLib.LOGGER.warn("The announcement response is not a JSON object");
             } else {
-                CorgiLib.LOGGER.error("GET request failed. Response Code: {}", response.statusCode());
+                CorgiLib.LOGGER.info("Announcement GET request failed. Response Code: {}", response.statusCode());
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } catch (IOException | RuntimeException e) {
+            CorgiLib.LOGGER.warn("Could not retrieve the announcement", e);
         }
         return null;
     }
 
     @Nullable
     public static AnnouncementInfo getInstance() {
-        return INSTANCE == null ? null : INSTANCE.getNow(null);
+        CompletableFuture<AnnouncementInfo> future = INSTANCE;
+        return future == null ? null : future.getNow(null);
+    }
+
+    public static void whenLoaded(Consumer<AnnouncementInfo> listener) {
+        CompletableFuture<AnnouncementInfo> future = INSTANCE;
+        if (future != null) {
+            future.thenAccept(info -> {
+                if (info != null) {
+                    Minecraft.getInstance().execute(() -> {
+                        if (getInstance() == info) {
+                            listener.accept(info);
+                        }
+                    });
+                }
+            });
+        }
     }
 
     private record StoredAnnouncementInfo(UUID player, long unixTime) {

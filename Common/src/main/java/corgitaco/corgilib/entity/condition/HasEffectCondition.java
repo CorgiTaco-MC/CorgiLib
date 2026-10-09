@@ -1,6 +1,7 @@
 package corgitaco.corgilib.entity.condition;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import corgitaco.corgilib.serialization.codec.CodecUtil;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -12,7 +13,7 @@ public class HasEffectCondition implements Condition {
 
     public static final Codec<HasEffectCondition> CODEC = RecordCodecBuilder.create(builder ->
             builder.group(
-                    CodecUtil.EFFECT_CODEC.listOf().fieldOf("effects").forGetter(hasEffectCondition -> hasEffectCondition.effects),
+                    CodecUtil.EFFECT_CODEC.listOf().validate(effects -> effects.isEmpty() ? DataResult.error(() -> "Effects condition requires at least 1 effect to check against.") : DataResult.success(effects)).fieldOf("effects").forGetter(hasEffectCondition -> hasEffectCondition.effects),
                     Codec.BOOL.fieldOf("has_any").forGetter(hasEffectCondition -> hasEffectCondition.hasAny)
             ).apply(builder, HasEffectCondition::new)
     );
@@ -21,7 +22,7 @@ public class HasEffectCondition implements Condition {
     private final boolean hasAny;
 
     public HasEffectCondition(List<MobEffect> effects, boolean hasAny) {
-        this.effects = effects;
+        this.effects = List.copyOf(effects);
         if (effects.isEmpty()) {
             throw new IllegalArgumentException("Effects condition requires at least 1 effect to check against.");
         }
@@ -31,15 +32,15 @@ public class HasEffectCondition implements Condition {
     @Override
     public boolean passes(ConditionContext conditionContext) {
         for (MobEffect effect : this.effects) {
-            if (hasAny) {
-                return conditionContext.entity().hasEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(effect));
-            } else {
-                if (!conditionContext.entity().hasEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(effect))) {
-                    return false;
-                }
+            boolean hasEffect = conditionContext.entity().hasEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(effect));
+            if (hasAny && hasEffect) {
+                return true;
+            }
+            if (!hasAny && !hasEffect) {
+                return false;
             }
         }
-        return true;
+        return !hasAny;
     }
 
     @Override

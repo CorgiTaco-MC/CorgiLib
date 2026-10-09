@@ -9,6 +9,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.Difficulty;
@@ -21,7 +22,9 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Optional;
+import java.net.URI;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -40,21 +43,67 @@ public class CodecUtil {
     public static final Codec<ResourceKey<Biome>> BIOME_CODEC = Identifier.CODEC.comapFlatMap(Identifier -> DataResult.success(ResourceKey.create(Registries.BIOME, Identifier)), ResourceKey::identifier);
 
     public static final Codec<EquipmentSlot> EQUIPMENT_SLOT_CODEC = Codec.STRING.comapFlatMap(s -> {
-        final EquipmentSlot equipmentSlotType = EquipmentSlot.byName(s.toLowerCase());
-        if (equipmentSlotType == null) {
-            throw new IllegalArgumentException(String.format("\"%s\" is not a valid equipmentSlotType. Valid equipmentSlotTypes: %s", s, Arrays.toString(Arrays.stream(EquipmentSlot.values()).map(EquipmentSlot::getName).toArray())));
+        try {
+            return DataResult.success(EquipmentSlot.byName(s.toLowerCase(Locale.ROOT)));
+        } catch (IllegalArgumentException exception) {
+            return DataResult.error(() -> String.format("\"%s\" is not a valid equipmentSlotType. Valid equipmentSlotTypes: %s", s, Arrays.toString(Arrays.stream(EquipmentSlot.values()).map(EquipmentSlot::getName).toArray())));
         }
-        return DataResult.success(equipmentSlotType);
 
     }, EquipmentSlot::getName);
     public static final Codec<Difficulty> DIFFICULTY_CODEC = Codec.STRING.comapFlatMap(s -> {
-        final Difficulty difficulty = Difficulty.byName(s.toLowerCase());
+        final Difficulty difficulty = Difficulty.byName(s.toLowerCase(Locale.ROOT));
         if (difficulty == null) {
-            throw new IllegalArgumentException(String.format("\"%s\" is not a valid difficulty. Valid difficulties: %s", s, Arrays.toString(Arrays.stream(Difficulty.values()).map(Difficulty::getKey).toArray())));
+            return DataResult.error(() -> String.format("\"%s\" is not a valid difficulty. Valid difficulties: %s", s, Arrays.toString(Arrays.stream(Difficulty.values()).map(Difficulty::getSerializedName).toArray())));
         }
         return DataResult.success(difficulty);
 
-    }, Difficulty::getKey);
+    }, Difficulty::getSerializedName);
+
+    public static final Codec<ClickEvent.Action> CLICK_EVENT_ACTION_CODEC = Codec.STRING.comapFlatMap(name -> {
+        try {
+            return DataResult.success(ClickEvent.Action.valueOf(name.toUpperCase(Locale.ROOT)));
+        } catch (IllegalArgumentException exception) {
+            return DataResult.error(() -> "Unknown click event action: " + name);
+        }
+    }, ClickEvent.Action::name);
+
+    public static final Codec<ClickEvent> CLICK_EVENT_CODEC = ClickEvent.Action.UNSAFE_CODEC
+            .<ClickEvent>dispatch("action", ClickEvent::action, ClickEvent.Action::valueCodec).withAlternative(
+            RecordCodecBuilder.<LegacyClickEvent>create(builder -> builder.group(
+                    CLICK_EVENT_ACTION_CODEC.fieldOf("action").forGetter(LegacyClickEvent::action),
+                    Codec.STRING.fieldOf("value").forGetter(LegacyClickEvent::value)
+            ).apply(builder, LegacyClickEvent::new)).comapFlatMap(LegacyClickEvent::toClickEvent, LegacyClickEvent::fromClickEvent)
+    );
+
+    private record LegacyClickEvent(ClickEvent.Action action, String value) {
+        DataResult<ClickEvent> toClickEvent() {
+            try {
+                return switch (action) {
+                    case OPEN_URL -> DataResult.success(new ClickEvent.OpenUrl(URI.create(value)));
+                    case OPEN_FILE -> DataResult.success(new ClickEvent.OpenFile(value));
+                    case RUN_COMMAND -> DataResult.success(new ClickEvent.RunCommand(value));
+                    case SUGGEST_COMMAND -> DataResult.success(new ClickEvent.SuggestCommand(value));
+                    case CHANGE_PAGE -> DataResult.success(new ClickEvent.ChangePage(Integer.parseInt(value)));
+                    case COPY_TO_CLIPBOARD -> DataResult.success(new ClickEvent.CopyToClipboard(value));
+                    default -> DataResult.error(() -> "Click event action requires the modern event format: " + action);
+                };
+            } catch (IllegalArgumentException exception) {
+                return DataResult.error(() -> "Invalid value for click event " + action + ": " + exception.getMessage());
+            }
+        }
+
+        static LegacyClickEvent fromClickEvent(ClickEvent event) {
+            return switch (event) {
+                case ClickEvent.OpenUrl open -> new LegacyClickEvent(event.action(), open.uri().toString());
+                case ClickEvent.OpenFile open -> new LegacyClickEvent(event.action(), open.path());
+                case ClickEvent.RunCommand command -> new LegacyClickEvent(event.action(), command.command());
+                case ClickEvent.SuggestCommand command -> new LegacyClickEvent(event.action(), command.command());
+                case ClickEvent.ChangePage page -> new LegacyClickEvent(event.action(), Integer.toString(page.page()));
+                case ClickEvent.CopyToClipboard copy -> new LegacyClickEvent(event.action(), copy.value());
+                default -> throw new IllegalArgumentException("Click event requires the modern event format: " + event.action());
+            };
+        }
+    }
 
     public static Function<String, DataResult<Integer>> validateColorHex() {
         return input -> {
@@ -90,7 +139,13 @@ public class CodecUtil {
     }
 
 
-    public static final Codec<Integer> INTEGER_KEY_CODEC = Codec.STRING.comapFlatMap(s -> DataResult.success(Integer.valueOf(s)), Object::toString);
+    public static final Codec<Integer> INTEGER_KEY_CODEC = Codec.STRING.comapFlatMap(s -> {
+        try {
+            return DataResult.success(Integer.valueOf(s));
+        } catch (NumberFormatException exception) {
+            return DataResult.error(() -> "Not an integer key: " + s);
+        }
+    }, Object::toString);
 
     public static Codec<Integer> intKeyRangeCodec(int min, int max) {
         Function<Integer, DataResult<Integer>> check = Codec.checkRange(min, max);

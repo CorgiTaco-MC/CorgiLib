@@ -20,15 +20,15 @@ public class NeoForgeNetworkHandler {
 
     private static <T extends Packet> void register(Packet.Handler<T> handler, PayloadRegistrar registrar) {
         if (handler.direction() == Packet.PacketDirection.SERVER_TO_CLIENT) {
-            registrar.playToClient(handler.type(), handler.serializer(), (arg, iPayloadContext) -> arg.handle(iPayloadContext.player().level(), iPayloadContext.player()));
+            registrar.playToClient(handler.type(), handler.serializer());
         }
 
         if (handler.direction() == Packet.PacketDirection.CLIENT_TO_SERVER) {
-            registrar.playToServer(handler.type(), handler.serializer(), (arg, iPayloadContext) -> arg.handle(iPayloadContext.player().level(), iPayloadContext.player()));
+            registrar.playToServer(handler.type(), handler.serializer(), (arg, context) -> handler.handle().handle(arg, context.player().level(), context.player()));
         }
 
         if (handler.direction() == Packet.PacketDirection.BI_DIRECTIONAL) {
-            registrar.playBidirectional(handler.type(), handler.serializer(), (arg, iPayloadContext) -> arg.handle(iPayloadContext.player().level(), iPayloadContext.player()));
+            registrar.playBidirectional(handler.type(), handler.serializer(), (arg, context) -> handler.handle().handle(arg, context.player().level(), context.player()));
         }
     }
 }

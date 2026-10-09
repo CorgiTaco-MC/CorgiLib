@@ -4,6 +4,7 @@ import com.mojang.serialization.*;
 
 import java.util.function.BiFunction;
 import java.util.stream.Stream;
+import java.util.Optional;
 
 public class CommentedCodec<A> extends MapCodec<A> {
 
@@ -15,8 +16,8 @@ public class CommentedCodec<A> extends MapCodec<A> {
         return new CommentedCodec<>(codec, name, comment, Codec::fieldOf);
     }
 
-    public static <B> CommentedCodec<B> optionalOf(Codec<B> codec, String name, String comment) {
-        return new CommentedCodec<>(codec, name, comment, (bCodec, s) -> (MapCodec<B>) bCodec.optionalFieldOf(name));
+    public static <B> CommentedCodec<Optional<B>> optionalOf(Codec<B> codec, String name, String comment) {
+        return new CommentedCodec<>(codec.optionalFieldOf(name), name, comment);
     }
 
     public static <B> CommentedCodec<B> optionalOf(Codec<B> codec, String name, String comment, B defaultVal) {
@@ -24,7 +25,11 @@ public class CommentedCodec<A> extends MapCodec<A> {
     }
 
     public CommentedCodec(Codec<A> codec, String name, String comment, BiFunction<Codec<A>, String, MapCodec<A>> codecBiFunction) {
-        this.mapCodec = codecBiFunction.apply(codec, name);
+        this(codecBiFunction.apply(codec, name), name, comment);
+    }
+
+    private CommentedCodec(MapCodec<A> mapCodec, String name, String comment) {
+        this.mapCodec = mapCodec;
         this.name = name;
         this.comment = comment;
     }

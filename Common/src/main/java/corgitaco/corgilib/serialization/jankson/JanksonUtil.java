@@ -54,15 +54,12 @@ public class JanksonUtil {
 
                 JsonElement value = entry.getValue();
                 if (value instanceof JsonArray array) {
-                    JsonArray jsonElements = handleArray(comments, alphabeticallySorted, entry.getKey(), array);
-
-                    if (!jsonElements.isEmpty()) {
-                        object.put(objectKey, jsonElements, comment);
-                    }
+                    JsonArray jsonElements = handleArray(comments, alphabeticallySorted, commentsKey, array);
+                    object.put(objectKey, jsonElements, comment);
                 }
 
                 if (value instanceof JsonObject nestedObject) {
-                    object.put(objectKey, addCommentsAndAlphabeticallySortRecursively(comments, nestedObject, entry.getKey() + ".", alphabeticallySorted), comment);
+                    object.put(objectKey, addCommentsAndAlphabeticallySortRecursively(comments, nestedObject, commentsKey + ".", alphabeticallySorted), comment);
                 }
             }
 
@@ -90,8 +87,10 @@ public class JanksonUtil {
                 sortedJsonElements.add(addCommentsAndAlphabeticallySortRecursively(comments, nestedObject, objectKey + ".", alphabeticallySorted));
             } else if (element1 instanceof JsonArray array1) {
                 JsonArrayOfArrays arrayOfArrays = new JsonArrayOfArrays();
-                arrayOfArrays.addAll(array1);
+                arrayOfArrays.addAll(handleArray(comments, alphabeticallySorted, objectKey, array1));
                 sortedJsonElements.add(arrayOfArrays);
+            } else {
+                sortedJsonElements.add(element1);
             }
         }
         return sortedJsonElements;

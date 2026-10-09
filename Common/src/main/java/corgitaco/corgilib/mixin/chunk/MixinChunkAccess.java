@@ -20,6 +20,7 @@ public class MixinChunkAccess implements RandomTickScheduler {
     @Override
     public void scheduleRandomTick(BlockPos pos) {
         scheduledRandomTick.add(pos.immutable());
+        ((ChunkAccess) (Object) this).markUnsaved();
     }
 
     @Override

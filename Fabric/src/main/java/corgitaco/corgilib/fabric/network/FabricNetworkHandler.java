@@ -18,20 +18,20 @@ public class FabricNetworkHandler {
 
     private static <T extends Packet> void register(Packet.Handler<T> handler) {
         if (handler.direction() == Packet.PacketDirection.SERVER_TO_CLIENT) {
-            PayloadTypeRegistry.playS2C().register(handler.type(), handler.serializer());
+            PayloadTypeRegistry.clientboundPlay().register(handler.type(), handler.serializer());
             if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
                 ClientProxy.registerClientReceiver(handler);
             }
         }
 
         if (handler.direction() == Packet.PacketDirection.CLIENT_TO_SERVER) {
-            PayloadTypeRegistry.playC2S().register(handler.type(), handler.serializer());
+            PayloadTypeRegistry.serverboundPlay().register(handler.type(), handler.serializer());
             ServerProxy.registerServerReceiver(handler);
         }
 
         if (handler.direction() == Packet.PacketDirection.BI_DIRECTIONAL) {
-            PayloadTypeRegistry.playC2S().register(handler.type(), handler.serializer());
-            PayloadTypeRegistry.playS2C().register(handler.type(), handler.serializer());
+            PayloadTypeRegistry.serverboundPlay().register(handler.type(), handler.serializer());
+            PayloadTypeRegistry.clientboundPlay().register(handler.type(), handler.serializer());
             ServerProxy.registerServerReceiver(handler);
             if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
                 ClientProxy.registerClientReceiver(handler);
@@ -50,10 +50,14 @@ public class FabricNetworkHandler {
     }
 
     public static <MSG extends Packet> void sendToServer(MSG packet) {
-        ClientPlayNetworking.send(packet);
+        ClientProxy.sendToServer(packet);
     }
 
     public record ClientProxy() {
+
+        private static <T extends Packet> void sendToServer(T packet) {
+            ClientPlayNetworking.send(packet);
+        }
 
         public static <T extends Packet> void registerClientReceiver(Packet.Handler<T> handler) {
             ClientPlayNetworking.registerGlobalReceiver(handler.type(), (t, context) -> handler.handle().handle(t, context.client().level, context.player()));

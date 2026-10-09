@@ -23,14 +23,12 @@ public class MixinStructureBlock {
 
     @Inject(method = "useWithoutItem", at = @At("HEAD"), cancellable = true)
     private void bindBox(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult, CallbackInfoReturnable<InteractionResult> cir) {
-        if (player.getItemInHand(InteractionHand.MAIN_HAND).is(Items.GOLDEN_AXE)) {
+        if (player.canUseGameMasterBlocks() && player.getItemInHand(InteractionHand.MAIN_HAND).is(Items.GOLDEN_AXE)) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof StructureBlockEntity structureBlockEntity) {
                 if (level.isClientSide()) {
-                    StructureBoxEditor.structureBox = StructureBoxEditor.getStructureWorldBox(structureBlockEntity);
-                    StructureBoxEditor.structureBlockPos = structureBlockEntity.getBlockPos();
-                    StructureBoxEditor.structureOffset = structureBlockEntity.getStructurePos();
-                    player.displayClientMessage(Component.literal("Editing structure block."), true);
+                    StructureBoxEditor.beginEditing(structureBlockEntity);
+                    player.sendOverlayMessage(Component.literal("Editing structure block."));
                 }
                 cir.setReturnValue(InteractionResult.PASS);
             }

@@ -7,7 +7,7 @@ public enum DoubleCheckType {
     GREATER_THAN(((number, number2) -> number.doubleValue() > number2.doubleValue())),
     GREATER_THAN_OR_EQUAL(((number, number2) -> number.doubleValue() >= number2.doubleValue())),
     LESSER_THAN(((number, number2) -> number.doubleValue() < number2.doubleValue())),
-    LESSER_THAN_OR_EQUAL(((number, number2) -> number.doubleValue() >= number2.doubleValue())),
+    LESSER_THAN_OR_EQUAL(((number, number2) -> number.doubleValue() <= number2.doubleValue())),
     EQUAL(((number, number2) -> number.doubleValue() == number2.doubleValue()));
 
     private final BiPredicate<Double, Double> numberBiPredicate;

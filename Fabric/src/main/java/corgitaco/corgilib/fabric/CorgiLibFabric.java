@@ -20,9 +20,9 @@ public class CorgiLibFabric implements ModInitializer {
     }
 
     public static void initializeCorgiLib(String initializedFrom) {
-        Objects.requireNonNull(initializedFrom, "BYG must be told where it was initialized from.");
+        Objects.requireNonNull(initializedFrom, "CorgiLib must be told where it was initialized from.");
         if (firstInitialized != null) {
-            CorgiLib.LOGGER.debug(String.format("Attempted to Initialize Oh The Biomes We've Gone (BWG) from \"%s\" but BWG already was initialized from \"%s\", this should not be a problem.", initializedFrom, firstInitialized));
+            CorgiLib.LOGGER.debug("Attempted to initialize CorgiLib from {} after it was already initialized from {}", initializedFrom, firstInitialized);
             return;
         }
         firstInitialized = initializedFrom;
