@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface RandomTickScheduler {
 
-    void scheduleRandomTick(BlockPos pos);
+    void corgilib$scheduleRandomTick(BlockPos pos);
 
 
-    List<BlockPos> getScheduledRandomTicks();
+    List<BlockPos> corgilib$getScheduledRandomTicks();
 }
