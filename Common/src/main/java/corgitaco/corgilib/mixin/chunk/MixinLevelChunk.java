@@ -14,6 +14,6 @@ public abstract class MixinLevelChunk implements RandomTickScheduler {
 
     @Inject(method = "<init>(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/level/chunk/ProtoChunk;Lnet/minecraft/world/level/chunk/LevelChunk$PostLoadProcessor;)V", at = @At("RETURN"))
     private void addScheduledRandomTicks(ServerLevel serverLevel, ProtoChunk chunk, LevelChunk.PostLoadProcessor $$2, CallbackInfo ci) {
-        this.getScheduledRandomTicks().addAll(((RandomTickScheduler) chunk).getScheduledRandomTicks());
+        this.corgilib$getScheduledRandomTicks().addAll(((RandomTickScheduler) chunk).corgilib$getScheduledRandomTicks());
     }
 }

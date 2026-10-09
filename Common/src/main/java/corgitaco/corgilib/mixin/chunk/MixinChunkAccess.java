@@ -18,12 +18,12 @@ public class MixinChunkAccess implements RandomTickScheduler {
 
 
     @Override
-    public void scheduleRandomTick(BlockPos pos) {
+    public void corgilib$scheduleRandomTick(BlockPos pos) {
         scheduledRandomTick.add(pos.immutable());
     }
 
     @Override
-    public List<BlockPos> getScheduledRandomTicks() {
+    public List<BlockPos> corgilib$getScheduledRandomTicks() {
         return scheduledRandomTick;
     }
 }
