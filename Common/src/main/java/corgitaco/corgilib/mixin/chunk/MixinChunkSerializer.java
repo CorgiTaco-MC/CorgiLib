@@ -36,6 +36,7 @@ public class MixinChunkSerializer {
                 listTag.add(NbtUtils.writeBlockPos(scheduledRandomTick));
             }
             corgiLibTag.put("scheduled_random_ticks_v2", listTag);
+            corgiLibTag.put("scheduled_random_ticks", new ListTag()); // Cull the old legacy tag. Should clean up oversized chunks once this chunk saves and this chunk's next read.
 
             tag.put("corgilib", corgiLibTag);
         }
